@@ -2,6 +2,8 @@
 library(car)
 library(caret)
 library(pROC)
+library(dplyr)
+library(tidyr)
 
 # Pegando dados
 data= read.csv('./heart_cleveland_upload.csv')
@@ -18,4 +20,3 @@ data$condition <- factor(data$condition,
 
 # dimensão dos dados
 dim(data)
-
