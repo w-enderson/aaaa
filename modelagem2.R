@@ -11,9 +11,6 @@ data2$condition <- factor(data2$condition,
                          levels = c(0, 1),
                          labels = c("Saudavel", "Doente"))
 
-
-                         library(dplyr)
-
 data_limpo <- data2 %>%
   mutate(
     # cp: 0, 1 e 2 viram "Baixo_Risco", 3 vira "Alto_Risco"
@@ -50,40 +47,67 @@ set.seed(28)
 
 # Divisão treino-test
 index <- createDataPartition(data_limpo$condition, p = 0.80, list = FALSE)
-treino <- data_limpo[index, ]
-teste  <- data_limpo[-index, ]
+treino_limpo <- data_limpo[index, ]
+teste_limpo  <- data_limpo[-index, ]
 
 
-modelo1_2 <- glm(formula1, data = treino, family = "binomial")
-Anova(modelo1_2, type = "III", test = "LR")
-modelo_reduzido_2 <- glm(condition ~   cp + oldpeak + slope+
-                          ca + thal,
-                    data = treino, 
-                    family = "binomial")
-anova(modelo1_2, modelo_reduzido_2, test = "Chisq")
+modelo_limpo <- glm(condition ~ sex+ cp +
+                   oldpeak + slope + ca + thal, 
+                 data = treino_limpo, 
+                 family = "binomial")
+Anova(modelo_limpo, type = "III", test = "LR")
 
-
+summary(modelo_limpo)
+plot(modelo_limpo)
 
 # Análise de resíduos do modelo reduzido
-residuos_deviance <- residuals(modelo_reduzido_2, type = "deviance")
+residuos_deviance <- residuals(modelo_limpo, type = "deviance")
 
 # Criar o QQ-Plot
 qqnorm(residuos_deviance, main = "QQ-Plot dos Resíduos Deviance (Modelo Reduzido)")
 qqline(residuos_deviance, col = "red", lwd = 2)
-plot(modelo_reduzido_2)
+## A deviance é mais próximo de uma normal, do que no modelo nos dados originais
+
+# há alguns pontos discrepantes que provavelmente estão modificando a estrutura da regressão?
 
 
-summary(modelo_reduzido_2)
-View(exp(cbind(OR = coef(modelo_reduzido_2), confint(modelo_reduzido_2))))
+
+nomes_outliers <- names(residuos_deviance[abs(residuos_deviance) > 3])
 
 
+treino_sem_outliers <- treino_limpo[!(rownames(treino_limpo) %in% nomes_outliers), ]
+modelo_sem <- glm(condition ~ sex+ cp +
+                    oldpeak + slope + ca + thal,
+                  data = treino_sem_outliers, 
+                  family = "binomial")
+
+summary(modelo_sem) # 136.95
+summary(modelo_limpo) # 172.62
+
+#  IC 95% dos parâmetros do modelo com outliers
+ic_parametros <- cbind(
+  Estimativa = coef(modelo_limpo),
+  confint(modelo_limpo)
+)
+print(round(ic_parametros, 4))
+
+# IC 95% dos parâmetros do modelo sem outliers
+ic_parametros <- cbind(
+  Estimativa = coef(modelo_sem),
+  confint(modelo_sem)
+)
+print(round(ic_parametros, 4))
+
+
+## Ao tirar esses valores discrepantes, não houve grande mudança nos coeficientes
+## do modelo, entretanto, houve uma grande queda de AIC
 
 
 
 # Criando árove usando as variáveis do modelo reduzido
-modelo_arvore <- rpart(condition ~ cp + oldpeak + slope+
-                          ca + thal, 
-                       data = treino, 
+modelo_arvore <- rpart(condition ~ sex+ cp +
+                         oldpeak + slope + ca + thal, 
+                       data = treino_sem_outliers, 
                        method = "class") 
 
 # Árvore criada
@@ -97,32 +121,28 @@ rpart.plot(modelo_arvore,
 
 
 
+# Avaliação no conjunto de teste - Regressão Logística
+prob_teste <- predict(modelo_sem, newdata = teste_limpo, type = "response")
 
-# --- 1. Modelo Logístico Reduzido ---
-# Obtendo probabilidades e convertendo para classes (threshold padrão 0.5)
-prob_glm <- predict(modelo_reduzido_2, newdata = teste, type = "response")
-pred_glm <- factor(ifelse(prob_glm > 0.5, "Doente", "Saudavel"), levels = c("Saudavel", "Doente"))
+# Limiar
+threshold_final <- 0.5 
 
-# Matriz de Confusão GLM
-mc_glm <- confusionMatrix(pred_glm, teste$condition, positive = "Doente")
+pred_classe_teste <- factor(ifelse(prob_teste >= threshold_final, "Doente", "Saudavel"), 
+                            levels = c("Saudavel", "Doente"))
 
-# --- 2. Modelo de Árvore de Decisão ---
-# Predição direta da classe
-pred_arvore <- predict(modelo_arvore, newdata = teste, type = "class")
+# Matriz de Confusão
+conf_matrix <- confusionMatrix(pred_classe_teste, teste_limpo$condition, positive = "Doente")
 
-# Matriz de Confusão Árvore
-mc_arvore <- confusionMatrix(pred_arvore, teste$condition, positive = "Doente")
+print(conf_matrix)
 
 
 
+## Avaliação na árvore de decisão
+pred_arvore_classe <- predict(modelo_arvore, newdata = teste_limpo, type = "class")
 
+prob_arvore <- predict(modelo_arvore, newdata = teste_limpo, type = "prob")[, "Doente"]
 
-df_comparativo <- data.frame(
-  Metrica = c("Acurácia", "Sensibilidade", "Especificidade", "Kappa"),
-  GLM_Reduzido = c(mc_glm$overall["Accuracy"], mc_glm$byClass["Sensitivity"], 
-                    mc_glm$byClass["Specificity"], mc_glm$overall["Kappa"]),
-  Arvore_Decisao = c(mc_arvore$overall["Accuracy"], mc_arvore$byClass["Sensitivity"], 
-                      mc_arvore$byClass["Specificity"], mc_arvore$overall["Kappa"])
-)
+# Matriz de Confusão
+conf_matrix_arvore <- confusionMatrix(pred_arvore_classe, teste_limpo$condition, positive = "Doente")
 
-print(df_comparativo)
+print(conf_matrix_arvore)
