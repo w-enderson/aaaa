@@ -1,3 +1,5 @@
+
+
 # seed
 set.seed(28)
 
@@ -61,7 +63,7 @@ anova(modelo1_, modelo_reduzido_, test = "Chisq")
 # Teste de Razão de Verossimilhança para o modelo reduzido
 Anova(modelo_reduzido_, type = "III", test = "LR")
 
-## Todas as variáveis são importantes e trazem informações importantes
+## Todas as variáveis são importantes e trazem novas informações que ajudam na classificação
 
 set.seed(28)
 modelo2 <- train( condition ~  sex + cp +
@@ -74,74 +76,65 @@ modelo2 <- train( condition ~  sex + cp +
 resultados <- resamples(list(modelo_14_variaveis = modelo1, modelo_6_variaveis = modelo2))
 metricas_folds <- resultados$values
 
-#summary(resultados)
-#dotplot(resultados)
+summary(resultados)
+dotplot(resultados)
 
 ## É possível observar que o modelo com 6 variáveis possui um poder de discriminação
 ## maior, em relação ao modelo com 14 variáveis (AUC, prAUC)
+## O modelo de 6 variáveis também é mais estável
 
 
-# Definindo melhor threshold para ambos os modelos
 
-preds_cv1 <- modelo1$pred
-roc_cv1 <- roc(response = preds_cv1$obs, 
-              predictor = preds_cv1$Doente,
-              levels = c("Saudavel", "Doente"))
-melhor_threshold1 <- coords(roc_cv1, "best", ret = "threshold")[[1]]
-# 0.4594418 
+lista_de_modelos <- list(modelo_14_var = modelo1, modelo_6_var = modelo2)
 
-preds_cv2 <- modelo2$pred
-roc_cv2 <- roc(response = preds_cv2$obs, 
-              predictor = preds_cv2$Doente,
-              levels = c("Saudavel", "Doente"))
-melhor_threshold2 <- coords(roc_cv2, "best", ret = "threshold")[[1]]
-# 0.3934961 
+# Chame a nova função
+analise_otimizada <- analisar_modelos_otimizados(lista_de_modelos)
+
+# Veja os resultados agora com os thresholds aplicados!
+View(analise_otimizada$tabela)
+print(analise_otimizada$grafico)
 
 
-tabela_comparativa <- metricas_folds %>%
-    # Transformar de formato largo para longo
-    pivot_longer(cols = -Resample, 
-                 names_to = "Modelo_Metrica", 
-                 values_to = "Valor") %>%
-    
-    # Separar o nome do modelo da métrica
-    separate(Modelo_Metrica, into = c("Modelo", "Metrica"), sep = "~") %>%
-    
-    # Filtrar apenas as métricas de interesse
-    filter(Metrica %in% c("Accuracy", "F1", "Recall", "Precision", "ROC", "prAUC")) %>%
-    
-    # Agrupar para calcular as estatísticas
-    group_by(Modelo, Metrica) %>%
-    summarise(
-        Min      = min(Valor, na.rm = TRUE),
-        Q025     = quantile(Valor, probs = 0.025, na.rm = TRUE),
-        Media    = mean(Valor, na.rm = TRUE),
-        Mediana  = median(Valor, na.rm = TRUE),
-        DP       = sd(Valor, na.rm = TRUE),
-        Q975     = quantile(Valor, probs = 0.975, na.rm = TRUE),
-        Max      = max(Valor, na.rm = TRUE),
-        .groups = 'drop'
-    ) %>%
-    
-    # Formatar para exibição
-    mutate(across(where(is.numeric), ~ round(., 4)))
+## O modelo reduzido é mais preciso (intervalo de confiança com menor amplitude), em relação ao modelo 
+## completo; Pelo princípio da parcimônia, optamos pelo uso do modelo reduzido
 
-View(as.data.frame(tabela_comparativa))
 
-## O modelo reduzido é mais estável (desvio padrão baixo), em relação ao modelo 
-## completo; Pelo princípio da parcimônia, optamos pelo modelo reduzido
 
 
 # Análise de resíduos do modelo reduzido
 residuos_deviance <- residuals(modelo_reduzido_, type = "deviance")
+residuos_pearson <- residuals(modelo_reduzido_, type = "pearson")
 
 # Criar o QQ-Plot
 qqnorm(residuos_deviance, main = "QQ-Plot dos Resíduos Deviance (Modelo Reduzido)")
 qqline(residuos_deviance, col = "red", lwd = 2)
 
 
+plot(residuos_deviance)
+plot(residuos_pearson)
+
 
 plot(modelo_reduzido_)
+
+## É possível observar que há alguns candidatos a outliers (observações com maiores deviances)
+
+## Para verificar o impacto dessas observações, treinaremos um modelo sem essas observações para
+## verficar se eles impactam significativamente os coeficientes da regrressão
+
+
+
+# Identificar quais índices têm deviance absoluta maior que 3
+outliers_index <- which(abs(residuos_deviance) > 2.5)
+
+# Ver quantos são e quais são
+print(outliers_index)
+
+# Se quiser ver esses dados na tabela original
+casos_estranhos <- treino[outliers_index, ]
+View(casos_estranhos)
+
+
+
 
 
 # Criando árove usando as variáveis do modelo reduzido
