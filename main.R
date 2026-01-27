@@ -4,6 +4,9 @@ library(caret)
 library(pROC)
 library(dplyr)
 library(tidyr)
+library(rpart)
+library(rpart.plot)
+
 
 # Pegando dados
 data= read.csv('./heart_cleveland_upload.csv')
