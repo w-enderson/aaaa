@@ -61,7 +61,7 @@ summary(modelo_limpo)
 plot(modelo_limpo)
 
 # Análise de resíduos do modelo reduzido
-residuos_deviance <- residuals(modelo_limpo, type = "deviance")
+residuos_pearson <- residuals(modelo_limpo, type = "pearson")
 
 # Criar o QQ-Plot
 qqnorm(residuos_deviance, main = "QQ-Plot dos Resíduos Deviance (Modelo Reduzido)")
@@ -71,33 +71,12 @@ qqline(residuos_deviance, col = "red", lwd = 2)
 # há alguns pontos discrepantes que provavelmente estão modificando a estrutura da regressão?
 
 
-
-nomes_outliers <- names(residuos_deviance[abs(residuos_deviance) > 3])
-
-
-treino_sem_outliers <- treino_limpo[!(rownames(treino_limpo) %in% nomes_outliers), ]
-modelo_sem <- glm(condition ~ sex+ cp +
-                    oldpeak + slope + ca + thal,
-                  data = treino_sem_outliers, 
-                  family = "binomial")
-
-summary(modelo_sem) # 136.95
-summary(modelo_limpo) # 172.62
-
 #  IC 95% dos parâmetros do modelo com outliers
 ic_parametros <- cbind(
   Estimativa = coef(modelo_limpo),
   confint(modelo_limpo)
 )
 print(round(ic_parametros, 4))
-
-# IC 95% dos parâmetros do modelo sem outliers
-ic_parametros <- cbind(
-  Estimativa = coef(modelo_sem),
-  confint(modelo_sem)
-)
-print(round(ic_parametros, 4))
-
 
 ## Ao tirar esses valores discrepantes, não houve grande mudança nos coeficientes
 ## do modelo, entretanto, houve uma grande queda de AIC
@@ -107,7 +86,7 @@ print(round(ic_parametros, 4))
 # Criando árove usando as variáveis do modelo reduzido
 modelo_arvore <- rpart(condition ~ sex+ cp +
                          oldpeak + slope + ca + thal, 
-                       data = treino_sem_outliers, 
+                       data = treino_limpo, 
                        method = "class") 
 
 # Árvore criada
