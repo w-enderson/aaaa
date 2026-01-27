@@ -68,19 +68,17 @@ qqnorm(residuos_deviance, main = "QQ-Plot dos Resíduos Deviance (Modelo Reduzid
 qqline(residuos_deviance, col = "red", lwd = 2)
 ## A deviance é mais próximo de uma normal, do que no modelo nos dados originais
 
-# há alguns pontos discrepantes que provavelmente estão modificando a estrutura da regressão?
 
-
-#  IC 95% dos parâmetros do modelo com outliers
+# IC 95% dos parâmetros do modelo com outliers
 ic_parametros <- cbind(
   Estimativa = coef(modelo_limpo),
   confint(modelo_limpo)
 )
 print(round(ic_parametros, 4))
 
-## Ao tirar esses valores discrepantes, não houve grande mudança nos coeficientes
-## do modelo, entretanto, houve uma grande queda de AIC
-
+## Esse modelo possui parâmetros mais estáveis e menores que o modelo anterior;
+## Mesmo que o modelo anterior tenha AIC menor, ele está atribuindo muito valor a
+## Determinadas variáveis
 
 
 # Criando árove usando as variáveis do modelo reduzido
@@ -101,27 +99,23 @@ rpart.plot(modelo_arvore,
 
 
 # Avaliação no conjunto de teste - Regressão Logística
-prob_teste <- predict(modelo_sem, newdata = teste_limpo, type = "response")
-
-# Limiar
+prob_teste <- predict(modelo_limpo, newdata = teste_limpo, type = "response")
 threshold_final <- 0.5 
-
 pred_classe_teste <- factor(ifelse(prob_teste >= threshold_final, "Doente", "Saudavel"), 
                             levels = c("Saudavel", "Doente"))
 
 # Matriz de Confusão
 conf_matrix <- confusionMatrix(pred_classe_teste, teste_limpo$condition, positive = "Doente")
-
 print(conf_matrix)
 
 
 
 ## Avaliação na árvore de decisão
 pred_arvore_classe <- predict(modelo_arvore, newdata = teste_limpo, type = "class")
-
 prob_arvore <- predict(modelo_arvore, newdata = teste_limpo, type = "prob")[, "Doente"]
 
 # Matriz de Confusão
 conf_matrix_arvore <- confusionMatrix(pred_arvore_classe, teste_limpo$condition, positive = "Doente")
-
 print(conf_matrix_arvore)
+
+
