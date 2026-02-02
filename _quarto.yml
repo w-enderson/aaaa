@@ -1,0 +1,6 @@
+project:
+  type: website # ou default
+
+preview:
+  port: 4444
+  browser: false

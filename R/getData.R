@@ -1,6 +1,6 @@
 
 # Pegando dados
-data= read.csv('./heart_cleveland_upload.csv')
+data= read.csv(here::here("data", "heart_cleveland_upload.csv"))
 
 head(data)
 
@@ -12,5 +12,7 @@ data$condition <- factor(data$condition,
                          levels = c(0, 1),
                          labels = c("Saudavel", "Doente"))
 
-# dimensão dos dados
-dim(data)
+
+2.6*2
+0.2*60
+''

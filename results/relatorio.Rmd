@@ -1,0 +1,78 @@
+---
+title: "Análise Estatística de Fatores de Risco para Doença Coronária"
+author: "Wenderson Santos"
+output: 
+    html_document:
+        theme: flatly
+        toc: true
+---
+
+
+# Introdução
+O dataset provém de um estudo que analisou 297 pacientes na Cleveland Clinic para avaliação da Doença Coronária;
+
+O experimento envolveu 3 estágios:
+ 
+* Teste de esforço (protocolo de Bruce) 
+* Cinefluoroscopia
+* Angiografia coronária
+* Cintilografia com Tálio-201
+
+## Variáveis analisadas
+
+* age
+* sex
+* cp : tipo de dor no peito
+    * Angina Típica: Atende a três critérios (localização atrás do osso do peito, provocada por esforço/estresse e aliviada por repouso).
+
+    * Angina Atípica: Atende a apenas dois desses critérios.
+
+    * Dor Não Anginosa: Atende a apenas um ou nenhum dos critérios, sugerindo que a causa pode ser muscular ou gástrica (não cardíaca).
+
+    * Assintomático: O paciente não sente dor, mas o médico ainda assim solicitou os exames devido a outros fatores de risco (como idade ou histórico familiar).
+
+* thalach : Frequência cardíaca máxima atingida antes da exaustão ou sintomas (no teste de esforço).
+* exang : Indica se o paciente sentiu angina (dor) durante o exercício.
+* oldpeak : diferença entre a posição do segmento ST (ECG) no repouso e no pico do esforço (thalac) (quanto maior essa diferença, maior é a área do coração que sofre por falta de sangue)
+* slope : Enquanto o oldpeak diz o quanto a linha afundou, o slope diz como ela se comporta logo após o afundamento. Existem três tipos principais de inclinação:
+
+    * Value 0: Upsloping (Ascendente): A linha afunda, mas sobe rápido. É comum em exercícios intensos e nem sempre indica doença grave.
+
+    * Value 1: Flat (Plano): A linha afunda e fica "reta". É um sinal clássico e preocupante de isquemia.
+
+    * Value 2: Downsloping (Descendente): A linha afunda e continua descendo. É o sinal mais grave de todos, indicando que o coração está em alto sofrimento isquêmico. (mesmo após a interrupção do esforço)
+
+
+* ca : Número de vasos principais com depósitos de cálcio ou interrupções no fluxo.
+    * 0: Nenhuma calcificação significativa (indício de artérias limpas)
+
+    * 1, 2 o
+    u 3: Indica que a doença está presente em um, dois ou três vasos principais.
+* thal : Avalia se o sangue está chegando a todas as partes do coração durante o repouso e após o esforço.
+
+    * 0 = Normal: O contraste se distribui uniformemente por todo o coração.
+
+    * 1 = Fixed Defect (Defeito Fixo): Uma parte do coração não recebe o contraste nem no esforço, nem no repouso. Isso geralmente indica tecido morto (cicatriz de um infarto antigo).
+
+    * 2 = Reversable Defect (Defeito Reversível): O coração parece normal em repouso, mas "falta sangue" em alguma região durante o esforço. Isso é o sinal clássico de isquemia ativa: a artéria está entupida, mas o tecido ainda está vivo e sofrendo.
+* condition (target)
+
+* trestbps : É a pressão arterial medida no momento da internação.
+* fbs : Glicemia de Jejum é maior ou menor que 120mg/dl (binário)
+* chol : nível total de colesterol no sangue.
+* restecg : 
+
+    * Value 0 (Normal): O coração em repouso não apresenta irregularidades elétricas.
+
+    * Value 1 (Anormalidade de Onda ST-T): O coração já mostra sinais de sofrimento mesmo sem fazer esforço. É um sinal de alerta precoce.
+
+    * Value 2 (Hipertrofia Ventricular Esquerda): Indica que o músculo do coração está "inchado" (grosso), geralmente por ter que fazer muita força para bombear o sangue contra uma pressão alta crônica.
+
+# Baixar dados
+
+```{r}
+source(here::here("R", "getData.R"))
+```
+
+
+# Análise Exploratória de Dados
