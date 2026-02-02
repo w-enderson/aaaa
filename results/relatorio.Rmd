@@ -127,3 +127,5 @@ anova(modelo1_, modelo_reduzido_, test = "Chisq")
 O P-valor foi de 0.7863, ou seja, a diferença entre os dois modelos não é significativa. Então optamos pelo modelo reduzido.
 
 
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
