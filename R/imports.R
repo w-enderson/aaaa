@@ -1,8 +1,3 @@
-install.packages("pak")
-
-pak::pkg_install(c('caret', 'car', 'MLmetrics', 'rpart', 'rpart.plot', 'tidyverse', 'here'))
-
-
 # Imports
 library(car)
 library(caret)
@@ -13,4 +8,3 @@ library(rpart)
 library(rpart.plot)
 library(ggplot2)
 library(tidyverse)
-

@@ -5,7 +5,14 @@ output:
     html_document:
         theme: flatly
         toc: true
+        code_folding: show
 ---
+
+
+```{r setup, include=FALSE}
+source(here::here("R", "imports.R"))
+source(here::here("R", "getData.R"))
+```
 
 
 # Introdução
@@ -68,11 +75,55 @@ O experimento envolveu 3 estágios:
 
     * Value 2 (Hipertrofia Ventricular Esquerda): Indica que o músculo do coração está "inchado" (grosso), geralmente por ter que fazer muita força para bombear o sangue contra uma pressão alta crônica.
 
-# Baixar dados
+
+
+# Modelagem com Regressão Logística
 
 ```{r}
-source(here::here("R", "getData.R"))
+source(here::here("R", "modelPrep.R"))
+```
+
+## Modelo com todas as variáveis
+
+```{r}
+formula1 <- condition ~ age + sex + cp + thalach + exang +
+                         oldpeak + slope + ca + thal +
+                         trestbps + chol + fbs + restecg
+
+modelo1_ <- glm(formula1, data = treino, family = "binomial")
+
 ```
 
 
-# Análise Exploratória de Dados
+
+
+```{r summary-modelo-completo}
+summary(modelo1_)
+```
+
+O AIC foi de 183.26. A maioria das variáveis no dataset possuem coeficientes estatísticamente iguais a 0, ou seja, segundo o teste de Wald, elas não contribuem significamente para a classificação.
+
+Para verificar isso, faremos um **Teste de Razão de Verossimilhanças** entre o modelo sem a variável e com todas as variáveis.
+
+```{r}
+Anova(modelo1_, type = "III", test = "LR")
+```
+
+Aqui é possível obervar que as variáveis que realmente contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal
+
+Para verificar se as outras variáveis não são importantes, faremos o Teste de Razão de Verossimilhanças entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)
+
+
+```{r}
+# Modelo reduzido ( com 6 variáveis )
+modelo_reduzido_ <- glm(condition ~  sex + cp +
+                        oldpeak + slope + ca + thal,
+                    data = treino, 
+                    family = "binomial")
+
+anova(modelo1_, modelo_reduzido_, test = "Chisq")
+```
+
+O P-valor foi de 0.7863, ou seja, a diferença entre os dois modelos não é significativa. Então optamos pelo modelo reduzido.
+
+

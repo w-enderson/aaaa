@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-883fcb54665cb35c022f5a38a2a72681.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-991b1886d3c685c7aa2b62b80640c7af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -197,13 +197,112 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 </section>
-<section id="baixar-dados" class="level1">
-<h1>Baixar dados</h1>
+<section id="modelagem-com-regressão-logística" class="level1">
+<h1>Modelagem com Regressão Logística</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"getData.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"modelPrep.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="modelo-com-todas-as-variáveis" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-com-todas-as-variáveis">Modelo com todas as variáveis</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>formula1 <span class="ot">&lt;-</span> condition <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> cp <span class="sc">+</span> thalach <span class="sc">+</span> exang <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                         oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                         trestbps <span class="sc">+</span> chol <span class="sc">+</span> fbs <span class="sc">+</span> restecg</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>modelo1_ <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula1, <span class="at">data =</span> treino, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = formula1, family = "binomial", data = treino)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -6.194972   3.665480  -1.690 0.091012 .  
+age         -0.026817   0.029325  -0.914 0.360473    
+sex1         1.751307   0.623152   2.810 0.004948 ** 
+cp1          1.905287   0.923121   2.064 0.039021 *  
+cp2          0.321896   0.847290   0.380 0.704011    
+cp3          2.768984   0.864891   3.202 0.001367 ** 
+thalach     -0.011517   0.012639  -0.911 0.362196    
+exang1       0.337282   0.550815   0.612 0.540317    
+oldpeak      0.649698   0.283217   2.294 0.021791 *  
+slope1       1.341601   0.600799   2.233 0.025547 *  
+slope2       0.402313   1.023407   0.393 0.694237    
+ca1          2.575920   0.637209   4.043 5.29e-05 ***
+ca2          3.119482   0.851992   3.661 0.000251 ***
+ca3          2.982628   1.206518   2.472 0.013432 *  
+thal1       -0.336710   0.979476  -0.344 0.731023    
+thal2        1.486334   0.518928   2.864 0.004180 ** 
+trestbps     0.014047   0.014133   0.994 0.320261    
+chol         0.005760   0.005651   1.019 0.308039    
+fbs1        -0.407723   0.701053  -0.582 0.560845    
+restecg1     1.120803   3.359086   0.334 0.738634    
+restecg2     0.261999   0.460966   0.568 0.569784    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 328.58  on 237  degrees of freedom
+Residual deviance: 141.26  on 217  degrees of freedom
+AIC: 183.26
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+</div>
+<p>O AIC foi de 183.26. A maioria das variáveis no dataset possuem coeficientes estatísticamente iguais a 0, ou seja, segundo o teste de Wald, elas não contribuem significamente para a classificação.</p>
+<p>Para verificar isso, faremos um <strong>Teste de Razão de Verossimilhanças</strong> entre o modelo sem a variável e com todas as variáveis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(modelo1_, <span class="at">type =</span> <span class="st">"III"</span>, <span class="at">test =</span> <span class="st">"LR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: condition
+         LR Chisq Df Pr(&gt;Chisq)    
+age        0.8384  1  0.3598551    
+sex        8.7757  1  0.0030527 ** 
+cp        20.5794  3  0.0001287 ***
+thalach    0.8493  1  0.3567554    
+exang      0.3705  1  0.5427268    
+oldpeak    5.7893  1  0.0161241 *  
+slope      5.6885  2  0.0581776 .  
+ca        30.7981  3  9.375e-07 ***
+thal      10.2887  2  0.0058324 ** 
+trestbps   0.9972  1  0.3179897    
+chol       1.0459  1  0.3064644    
+fbs        0.3411  1  0.5591824    
+restecg    0.4147  2  0.8127298    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Aqui é possível obervar que as variáveis que realmente contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal</p>
+<p>Para verificar se as outras variáveis não são importantes, faremos o Teste de Razão de Verossimilhanças entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo reduzido ( com 6 variáveis )</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>modelo_reduzido_ <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span>  sex <span class="sc">+</span> cp <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                        oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> treino, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_, modelo_reduzido_, <span class="at">test =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: condition ~ age + sex + cp + thalach + exang + oldpeak + slope + 
+    ca + thal + trestbps + chol + fbs + restecg
+Model 2: condition ~ sex + cp + oldpeak + slope + ca + thal
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+1       217     141.26                     
+2       225     145.99 -8  -4.7275   0.7863</code></pre>
+</div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

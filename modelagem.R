@@ -1,29 +1,15 @@
-# seed
-set.seed(28)
-
-# Divisão treino-test
-index <- createDataPartition(data$condition, p = 0.80, list = FALSE)
-treino <- data[index, ]
-teste  <- data[-index, ]
-
-# cross validation
-ctrl <- trainControl( method = "cv", 
-                      number = 10, 
-                      classProbs = TRUE, 
-                      savePredictions = "final",
-                      summaryFunction = multiClassSummary,)
-
-
 ## Modelo 1 - com todas as variáveis
 formula1 <- condition ~ age + sex + cp + thalach + exang +
                          oldpeak + slope + ca + thal +
                          trestbps + chol + fbs + restecg
+
 modelo1 <- train(formula1, 
                   data = treino, 
                   method = "glm", 
                   family = "binomial", 
                   trControl = ctrl,
                   )
+
 modelo1_ <- glm(formula1, data = treino, family = "binomial")
 
 # Ajuste do modelo

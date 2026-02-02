@@ -11,8 +11,3 @@ data[cols_para_fator] <- lapply(data[cols_para_fator], as.factor)
 data$condition <- factor(data$condition,
                          levels = c(0, 1),
                          labels = c("Saudavel", "Doente"))
-
-
-2.6*2
-0.2*60
-''

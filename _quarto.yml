@@ -1,5 +1,8 @@
 project:
   type: website # ou default
+  render:
+    - "*.Rmd"
+    - "!*.ipynb"
 
 preview:
   port: 4444
