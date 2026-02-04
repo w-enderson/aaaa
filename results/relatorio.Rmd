@@ -12,6 +12,9 @@ output:
 ```{r setup, include=FALSE}
 source(here::here("R", "imports.R"))
 source(here::here("R", "getData.R"))
+source(here::here("R", "getDataBin.R"))
+source(here::here("R", "modelPrep.R"))
+
 ```
 
 
@@ -101,15 +104,20 @@ modelo1_ <- glm(formula1, data = treino, family = "binomial")
 summary(modelo1_)
 ```
 
-O AIC foi de 183.26. A maioria das variáveis no dataset possuem coeficientes estatísticamente iguais a 0, ou seja, segundo o teste de Wald, elas não contribuem significamente para a classificação.
+O teste de significância do modelo mostra que ele possui uma deviance muito menor, em relação ao modelo sem variáveis;
 
-Para verificar isso, faremos um **Teste de Razão de Verossimilhanças** entre o modelo sem a variável e com todas as variáveis.
+O AIC foi de 183.26. 
+
+Embora o modelo explique consiga explicar bem a variável alvo, é possível observar que a maioria das covariáveis não são estatísticametentes significativas, segundo o teste de Wald.
+
+Para verificar isso, faremos um **Teste de Razão de Verossimilhanças**, verificando o impacto da retirada de cada variável.
 
 ```{r}
-Anova(modelo1_, type = "III", test = "LR")
+pander(Anova(modelo1_, type = "III", test = "LR"))
+
 ```
 
-Aqui é possível obervar que as variáveis que realmente contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal
+Aqui é possível obervar que as variáveis que mais contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal
 
 Para verificar se as outras variáveis não são importantes, faremos o Teste de Razão de Verossimilhanças entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)
 
@@ -121,9 +129,250 @@ modelo_reduzido_ <- glm(condition ~  sex + cp +
                     data = treino, 
                     family = "binomial")
 
-anova(modelo1_, modelo_reduzido_, test = "Chisq")
+pander(anova(modelo1_, modelo_reduzido_, test = "Chisq"))
 ```
 
-O P-valor foi de 0.7863, ou seja, a diferença entre os dois modelos não é significativa. Então optamos pelo modelo reduzido.
+
+O P-valor foi de 0.7863, ou seja, não há evidências de que o modelo com todas as variáveis seja melhor que o modelo reduzido. Então optamos pelo uso do modelo reduzido.
+
+```{r}
+pander(Anova(modelo_reduzido_, type = "III", test = "LR"))
+
+```
+
+Todas variáveis contribuem significativamente par ao modelo.
+
+## Analisando os coeficientes do modelo reduzido
+
+```{r}
+summary(modelo_reduzido_)
+```
+
+O AIC do modelo reduzido (171.99) foi menor, em relação ao modelo com todas as variáveis, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.
+
+```{r}
+# Calcula os Odds Ratios e os Intervalos de Confiança
+intervalos <- exp(confint(modelo_reduzido_))
+ors <- exp(coef(modelo_reduzido_))
+
+# Cria o data frame e calcula a Amplitude
+tabela_coef <- data.frame(
+  OR = ors,
+  "2.5" = intervalos[,1],
+  "97.5" = intervalos[,2],
+  Amplitude = intervalos[,2] - intervalos[,1] # Diferença absoluta
+)
+
+pander(tabela_coef, 
+       caption = "Odds Ratios, Intervalos de Confiança e Amplitude",
+       digits = 4)
+```
+
+É possível observar que alguns coeficientes estimados são muito incertos (o modelo não conseguiu definir se a associação entre a respectiva variável e o target era positiva ou negativa);
+
+Essas variáveis foram : cp2, slope2 e thal1
+
+Outros coeficientes tinham IC com amplitude grande demais, como foi o caso de cp3, ca3, ca2 
+
+Ou seja, o modelo não conseguiu estimar precisamente os coeficientes 
+
+Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.
 
 
+## Treinando modelo com agrupamento de classes subrepresentadas
+
+* cp : 
+    * cat0 : {0, 1, 2}
+    * cat1 : 3
+* slope : 
+    * cat0 : 0
+    * cat1 : {1, 2}
+* ca : 
+    * cat0 : 0
+    * cat1 : {1, 2, 3}
+* thal : 
+    * cat0 : 0
+    * cat1 : {1, 2}
+
+```{r}
+modelo_limpo <- glm(condition ~ sex+ cp +
+                   oldpeak + slope + ca + thal, 
+                 data = treino_limpo, 
+                 family = "binomial")
+```
+
+
+```{r}
+summary(modelo_limpo)
+```
+```{r}
+pander(Anova(modelo_limpo, type = "III", test = "LR"))
+
+```
+
+```{r}
+# Calcula os Odds Ratios e os Intervalos de Confiança
+intervalos <- exp(confint(modelo_limpo))
+ors <- exp(coef(modelo_limpo))
+
+# Cria o data frame e calcula a Amplitude
+tabela_coef <- data.frame(
+  OR = ors,
+  "2.5" = intervalos[,1],
+  "97.5" = intervalos[,2],
+  Amplitude = intervalos[,2] - intervalos[,1] # Diferença absoluta
+)
+
+pander(tabela_coef, 
+       caption = "Odds Ratios, Intervalos de Confiança e Amplitude",
+       digits = 4)
+```
+
+
+Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os resultados obtidos da EDA;
+
+
+## Verificando o desempenho dos modelos no conjunto de teste
+
+```{r}
+set.seed(28)
+modelo1 <- train( condition ~ sex+ cp +
+                    oldpeak + slope + ca + thal,
+                  data = treino,
+                  method = "glm",
+                  family = "binomial",
+                  trControl = ctrl)
+
+modelo2 <- train( condition ~ sex+ cp +
+                    oldpeak + slope + ca + thal,
+                  data = treino_limpo,
+                  method = "glm",
+                  family = "binomial",
+                  trControl = ctrl)
+
+resultados <- resamples(list(original = modelo1, limpo = modelo2))
+```
+
+
+
+```{r}
+dotplot(resultados)
+```
+
+
+```{r}
+# Matriz para o modelo original
+p1 <- predict(modelo1, treino)
+m_original <- confusionMatrix(p1, treino$condition)
+
+# Matriz para o modelo limpo
+p2 <- predict(modelo2, treino_limpo)
+m_limpo <- confusionMatrix(p2, treino_limpo$condition)
+
+# Exibindo lado a lado com pander
+pander(m_original$table, caption = "Matriz de Confusão: Modelo Original")
+pander(m_limpo$table, caption = "Matriz de Confusão: Modelo Limpo")
+```
+
+
+
+
+```{r}
+# 1. Treinando a Árvore de Decisão com Dados Originais
+arvore_original <- rpart(condition ~ sex + cp + oldpeak + slope + ca + thal, 
+                         data = treino, 
+                         method = "class")
+
+# 2. Treinando a Árvore de Decisão com Dados Limpos
+arvore_limpa <- rpart(condition ~ sex + cp + oldpeak + slope + ca + thal, 
+                      data = treino_limpo, 
+                      method = "class")
+
+# 3. Plotando as árvores lado a lado para comparação
+par(mfrow = c(1, 2)) # Divide a tela em 2 colunas
+
+rpart.plot(arvore_original, main = "Árvore: Dados Originais", 
+           type = 4, extra = 104, under = TRUE, faclen = 0)
+
+rpart.plot(arvore_limpa, main = "Árvore: Dados Limpos", 
+           type = 4, extra = 104, under = TRUE, faclen = 0)
+```
+
+
+
+
+```{r}
+# --- 1. PREDIÇÕES (REGRESSÃO LOGÍSTICA) ---
+# Modelo 1 (Original) no Teste Original
+pred_log_orig <- predict(modelo1, teste)
+cm_log_orig <- confusionMatrix(pred_log_orig, teste$condition)
+
+# Modelo 2 (Limpo) no Teste Limpo
+pred_log_limpo <- predict(modelo2, teste_limpo)
+cm_log_limpo <- confusionMatrix(pred_log_limpo, teste_limpo$condition)
+
+# --- 2. PREDIÇÕES (ÁRVORE DE DECISÃO) ---
+# Árvore Original no Teste Original
+pred_tree_orig <- predict(arvore_original, teste, type = "class")
+cm_tree_orig <- confusionMatrix(pred_tree_orig, teste$condition)
+
+# Árvore Limpa no Teste Limpo
+pred_tree_limpa <- predict(arvore_limpa, teste_limpo, type = "class")
+cm_tree_limpa <- confusionMatrix(pred_tree_limpa, teste_limpo$condition)
+
+# --- 3. TABELA COMPARATIVA DE ACURÁCIA ---
+comparativo_teste <- data.frame(
+  Modelo = c("Logística Original", "Logística Limpa", "Árvore Original", "Árvore Limpa"),
+  Acuracia = c(cm_log_orig$overall['Accuracy'], cm_log_limpo$overall['Accuracy'], 
+               cm_tree_orig$overall['Accuracy'], cm_tree_limpa$overall['Accuracy']),
+  Sensibilidade = c(cm_log_orig$byClass['Sensitivity'], cm_log_limpo$byClass['Sensitivity'], 
+                    cm_tree_orig$byClass['Sensitivity'], cm_tree_limpa$byClass['Sensitivity']),
+  Especificidade = c(cm_log_orig$byClass['Specificity'], cm_log_limpo$byClass['Specificity'], 
+                     cm_tree_orig$byClass['Specificity'], cm_tree_limpa$byClass['Specificity'])
+)
+
+pander(comparativo_teste, caption = "Performance no Conjunto de Teste")
+
+
+
+# --- 1. PREDIÇÕES DE PROBABILIDADE (Necessárias para AUC) ---
+prob_log_orig  <- predict(modelo1, teste, type = "prob")[,2]
+prob_log_limpo <- predict(modelo2, teste_limpo, type = "prob")[,2]
+prob_tree_orig <- predict(arvore_original, teste, type = "prob")[,2]
+prob_tree_limpa <- predict(arvore_limpa, teste_limpo, type = "prob")[,2]
+
+# --- 2. FUNÇÃO AUXILIAR PARA MÉTRICAS ---
+get_metrics <- function(pred_class, true_class, probs) {
+  cm <- confusionMatrix(pred_class, true_class)
+  roc_obj <- roc(true_class, probs, quiet = TRUE)
+  
+  return(c(
+    Acc = cm$overall['Accuracy'],
+    Sens = cm$byClass['Sensitivity'],
+    Spec = cm$byClass['Specificity'],
+    AUC = auc(roc_obj),
+    PR_AUC = PRAUC(probs, ifelse(true_class == levels(true_class)[2], 1, 0))
+  ))
+}
+
+# --- 3. CÁLCULO DAS MÉTRICAS ---
+m1 <- get_metrics(pred_log_orig, teste$condition, prob_log_orig)
+m2 <- get_metrics(pred_log_limpo, teste_limpo$condition, prob_log_limpo)
+m3 <- get_metrics(pred_tree_orig, teste$condition, prob_tree_orig)
+m4 <- get_metrics(pred_tree_limpa, teste_limpo$condition, prob_tree_limpa)
+
+# --- 4. TABELA FINAL ---
+comparativo_completo <- data.frame(
+  Modelo = c("Logística Original", "Logística Limpa", "Árvore Original", "Árvore Limpa"),
+  rbind(m1, m2, m3, m4)
+)
+pander(comparativo_completo, caption = "Comparativo de Performance no Teste (AUC e PR-AUC)")
+
+# --- 5. PRINT DAS MATRIZES DE CONFUSÃO ---
+cat("\n### MATRIZES DE CONFUSÃO ###\n")
+pander(cm_log_orig$table, caption = "Logística Original")
+pander(cm_log_limpo$table, caption = "Logística Limpa")
+pander(cm_tree_orig$table, caption = "Árvore Original")
+pander(cm_tree_limpa$table, caption = "Árvore Limpa")
+
+```
