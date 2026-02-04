@@ -104,11 +104,11 @@ modelo1_ <- glm(formula1, data = treino, family = "binomial")
 summary(modelo1_)
 ```
 
-O teste de significância do modelo mostra que ele possui uma deviance muito menor, em relação ao modelo sem variáveis;
+É possível observar que o modelo com as variáveis possui uma deviance muito menor, em relação ao modelo sem variáveis; ou seja, ele é significativo.
 
 O AIC foi de 183.26. 
 
-Embora o modelo explique consiga explicar bem a variável alvo, é possível observar que a maioria das covariáveis não são estatísticametentes significativas, segundo o teste de Wald.
+Embora o modelo explique bem a variável alvo, é possível observar que a maioria das covariáveis não é estatísticamente significativa, segundo o teste de Wald.
 
 Para verificar isso, faremos um **Teste de Razão de Verossimilhanças**, verificando o impacto da retirada de cada variável.
 
@@ -119,7 +119,7 @@ pander(Anova(modelo1_, type = "III", test = "LR"))
 
 Aqui é possível obervar que as variáveis que mais contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal
 
-Para verificar se as outras variáveis não são importantes, faremos o Teste de Razão de Verossimilhanças entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)
+Para verificar o impacto no modelo ao retirar essas variáveis, faremos o **Teste de Razão de Verossimilhanças** entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)
 
 
 ```{r}
@@ -140,7 +140,7 @@ pander(Anova(modelo_reduzido_, type = "III", test = "LR"))
 
 ```
 
-Todas variáveis contribuem significativamente par ao modelo.
+Todas variáveis contribuem significativamente para o modelo.
 
 ## Analisando os coeficientes do modelo reduzido
 
@@ -148,7 +148,7 @@ Todas variáveis contribuem significativamente par ao modelo.
 summary(modelo_reduzido_)
 ```
 
-O AIC do modelo reduzido (171.99) foi menor, em relação ao modelo com todas as variáveis, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.
+O AIC do modelo reduzido (171.99) foi menor que o do modelo com todas as variáveis, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.
 
 ```{r}
 # Calcula os Odds Ratios e os Intervalos de Confiança
@@ -182,17 +182,17 @@ Uma possível motivação para isso é que essas variáveis categóricas possuem
 ## Treinando modelo com agrupamento de classes subrepresentadas
 
 * cp : 
-    * cat0 : {0, 1, 2}
-    * cat1 : 3
+    * com_dor : {0, 1, 2}
+    * sem_dor : {3}
 * slope : 
-    * cat0 : 0
-    * cat1 : {1, 2}
+    * asc : {0}
+    * not_asc : {1, 2}
 * ca : 
-    * cat0 : 0
-    * cat1 : {1, 2, 3}
+    * zero : {0}
+    * not_zero : {1, 2, 3}
 * thal : 
-    * cat0 : 0
-    * cat1 : {1, 2}
+    * normal : {0}
+    * not_normal : {1, 2}
 
 ```{r}
 modelo_limpo <- glm(condition ~ sex+ cp +
@@ -202,12 +202,10 @@ modelo_limpo <- glm(condition ~ sex+ cp +
 ```
 
 
+
+
 ```{r}
 summary(modelo_limpo)
-```
-```{r}
-pander(Anova(modelo_limpo, type = "III", test = "LR"))
-
 ```
 
 ```{r}
@@ -229,10 +227,10 @@ pander(tabela_coef,
 ```
 
 
-Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os resultados obtidos da EDA;
+Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os resultados obtidos na EDA;
 
 
-## Verificando o desempenho dos modelos no conjunto de teste
+# Verificando o desempenho dos modelos no conjunto de teste
 
 ```{r}
 set.seed(28)
@@ -350,7 +348,7 @@ get_metrics <- function(pred_class, true_class, probs) {
     Acc = cm$overall['Accuracy'],
     Sens = cm$byClass['Sensitivity'],
     Spec = cm$byClass['Specificity'],
-    AUC = auc(roc_obj),
+    AUC = pROC::auc(roc_obj),
     PR_AUC = PRAUC(probs, ifelse(true_class == levels(true_class)[2], 1, 0))
   ))
 }
@@ -376,3 +374,5 @@ pander(cm_tree_orig$table, caption = "Árvore Original")
 pander(cm_tree_limpa$table, caption = "Árvore Limpa")
 
 ```
+
+
