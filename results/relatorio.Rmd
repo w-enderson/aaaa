@@ -6,6 +6,10 @@ output:
         theme: flatly
         toc: true
         code_folding: show
+    pdf_document:
+        toc: true
+        highlight: tango
+        latex_engine: xelatex
 ---
 
 
@@ -14,6 +18,7 @@ source(here::here("R", "imports.R"))
 source(here::here("R", "getData.R"))
 source(here::here("R", "getDataBin.R"))
 source(here::here("R", "modelPrep.R"))
+source(here::here("R", "functions.R"))
 
 ```
 
@@ -104,8 +109,6 @@ modelo1_ <- glm(formula1, data = treino, family = "binomial")
 summary(modelo1_)
 ```
 
-É possível observar que o modelo com as variáveis possui uma deviance muito menor, em relação ao modelo sem variáveis; ou seja, ele é significativo.
-
 O AIC foi de 183.26. 
 
 Embora o modelo explique bem a variável alvo, é possível observar que a maioria das covariáveis não é estatísticamente significativa, segundo o teste de Wald.
@@ -148,7 +151,7 @@ Todas variáveis contribuem significativamente para o modelo.
 summary(modelo_reduzido_)
 ```
 
-O AIC do modelo reduzido (171.99) foi menor que o do modelo com todas as variáveis, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.
+O AIC do modelo reduzido (171.99) foi menor que o do modelo completo, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.
 
 ```{r}
 # Calcula os Odds Ratios e os Intervalos de Confiança
@@ -174,7 +177,7 @@ Essas variáveis foram : cp2, slope2 e thal1
 
 Outros coeficientes tinham IC com amplitude grande demais, como foi o caso de cp3, ca3, ca2 
 
-Ou seja, o modelo não conseguiu estimar precisamente os coeficientes 
+Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes 
 
 Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.
 
@@ -195,9 +198,9 @@ Uma possível motivação para isso é que essas variáveis categóricas possuem
     * not_normal : {1, 2}
 
 ```{r}
-modelo_limpo <- glm(condition ~ sex+ cp +
+modelo_agrupado <- glm(condition ~ sex+ cp +
                    oldpeak + slope + ca + thal, 
-                 data = treino_limpo, 
+                 data = treino_agrupado, 
                  family = "binomial")
 ```
 
@@ -205,13 +208,13 @@ modelo_limpo <- glm(condition ~ sex+ cp +
 
 
 ```{r}
-summary(modelo_limpo)
+summary(modelo_agrupado)
 ```
 
 ```{r}
 # Calcula os Odds Ratios e os Intervalos de Confiança
-intervalos <- exp(confint(modelo_limpo))
-ors <- exp(coef(modelo_limpo))
+intervalos <- exp(confint(modelo_agrupado))
+ors <- exp(coef(modelo_agrupado))
 
 # Cria o data frame e calcula a Amplitude
 tabela_coef <- data.frame(
@@ -227,152 +230,164 @@ pander(tabela_coef,
 ```
 
 
-Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os resultados obtidos na EDA;
+Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os insights obtidos na EDA;
 
 
-# Verificando o desempenho dos modelos no conjunto de teste
-
-```{r}
-set.seed(28)
-modelo1 <- train( condition ~ sex+ cp +
-                    oldpeak + slope + ca + thal,
-                  data = treino,
-                  method = "glm",
-                  family = "binomial",
-                  trControl = ctrl)
-
-modelo2 <- train( condition ~ sex+ cp +
-                    oldpeak + slope + ca + thal,
-                  data = treino_limpo,
-                  method = "glm",
-                  family = "binomial",
-                  trControl = ctrl)
-
-resultados <- resamples(list(original = modelo1, limpo = modelo2))
-```
-
+# Criando árvore de decisão de acordo com as variáveis usadas no modelo logístico reduzido
 
 
 ```{r}
-dotplot(resultados)
-```
-
-
-```{r}
-# Matriz para o modelo original
-p1 <- predict(modelo1, treino)
-m_original <- confusionMatrix(p1, treino$condition)
-
-# Matriz para o modelo limpo
-p2 <- predict(modelo2, treino_limpo)
-m_limpo <- confusionMatrix(p2, treino_limpo$condition)
-
-# Exibindo lado a lado com pander
-pander(m_original$table, caption = "Matriz de Confusão: Modelo Original")
-pander(m_limpo$table, caption = "Matriz de Confusão: Modelo Limpo")
-```
-
-
-
-
-```{r}
-# 1. Treinando a Árvore de Decisão com Dados Originais
+# Árvore de Decisão nos Dados Originais
 arvore_original <- rpart(condition ~ sex + cp + oldpeak + slope + ca + thal, 
                          data = treino, 
                          method = "class")
 
-# 2. Treinando a Árvore de Decisão com Dados Limpos
+# Árvore de Decisão nos Dados com classes agrupadas 
 arvore_limpa <- rpart(condition ~ sex + cp + oldpeak + slope + ca + thal, 
                       data = treino_limpo, 
                       method = "class")
 
-# 3. Plotando as árvores lado a lado para comparação
-par(mfrow = c(1, 2)) # Divide a tela em 2 colunas
+# Plotando das árvores
+par(mfrow = c(1, 2))
 
 rpart.plot(arvore_original, main = "Árvore: Dados Originais", 
            type = 4, extra = 104, under = TRUE, faclen = 0)
 
-rpart.plot(arvore_limpa, main = "Árvore: Dados Limpos", 
+rpart.plot(arvore_limpa, main = "Árvore: Dados com classes agrupadas", 
            type = 4, extra = 104, under = TRUE, faclen = 0)
 ```
 
+As duas árvores geradas são iguais, isso mostra que o agrupamento das classes subrepresentadas faz sentido;
 
 
 
+
+
+
+## Verificando o desempenho do modelo no conjunto de teste (via boostrap)
 ```{r}
-# --- 1. PREDIÇÕES (REGRESSÃO LOGÍSTICA) ---
-# Modelo 1 (Original) no Teste Original
-pred_log_orig <- predict(modelo1, teste)
-cm_log_orig <- confusionMatrix(pred_log_orig, teste$condition)
+# BOOTSTRAP
+set.seed(123)
+n_boot <- 1000
 
-# Modelo 2 (Limpo) no Teste Limpo
-pred_log_limpo <- predict(modelo2, teste_limpo)
-cm_log_limpo <- confusionMatrix(pred_log_limpo, teste_limpo$condition)
+# Bootstrap para os 3 modelos principais
+boot_reduzido <- boot(data = teste, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = modelo_reduzido_, tipo_modelo = "glm")
 
-# --- 2. PREDIÇÕES (ÁRVORE DE DECISÃO) ---
-# Árvore Original no Teste Original
-pred_tree_orig <- predict(arvore_original, teste, type = "class")
-cm_tree_orig <- confusionMatrix(pred_tree_orig, teste$condition)
+boot_agrupado <- boot(data = teste_agrupado, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = modelo_agrupado, tipo_modelo = "glm")
 
-# Árvore Limpa no Teste Limpo
-pred_tree_limpa <- predict(arvore_limpa, teste_limpo, type = "class")
-cm_tree_limpa <- confusionMatrix(pred_tree_limpa, teste_limpo$condition)
+boot_arvore   <- boot(data = teste_agrupado, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = arvore_limpa, tipo_modelo = "tree")
 
-# --- 3. TABELA COMPARATIVA DE ACURÁCIA ---
-comparativo_teste <- data.frame(
-  Modelo = c("Logística Original", "Logística Limpa", "Árvore Original", "Árvore Limpa"),
-  Acuracia = c(cm_log_orig$overall['Accuracy'], cm_log_limpo$overall['Accuracy'], 
-               cm_tree_orig$overall['Accuracy'], cm_tree_limpa$overall['Accuracy']),
-  Sensibilidade = c(cm_log_orig$byClass['Sensitivity'], cm_log_limpo$byClass['Sensitivity'], 
-                    cm_tree_orig$byClass['Sensitivity'], cm_tree_limpa$byClass['Sensitivity']),
-  Especificidade = c(cm_log_orig$byClass['Specificity'], cm_log_limpo$byClass['Specificity'], 
-                     cm_tree_orig$byClass['Specificity'], cm_tree_limpa$byClass['Specificity'])
+
+tabela_bootstrap <- rbind(
+  summarize_boot(boot_reduzido, "Logística Reduzida"),
+  summarize_boot(boot_agrupado, "Logística Agrupada"),
+  summarize_boot(boot_arvore, "Árvore de Decisão")
 )
 
-pander(comparativo_teste, caption = "Performance no Conjunto de Teste")
 
+tabela_ordenada <- tabela_bootstrap %>%
+  arrange(Metrica, desc(Modelo))
 
+pander(tabela_ordenada, 
+       caption = "Métricas de Performance Ordenadas (Média e IC de 95%)",
+       split.table = Inf, # Evita que a tabela quebre em colunas
+       digits = 4)
 
-# --- 1. PREDIÇÕES DE PROBABILIDADE (Necessárias para AUC) ---
-prob_log_orig  <- predict(modelo1, teste, type = "prob")[,2]
-prob_log_limpo <- predict(modelo2, teste_limpo, type = "prob")[,2]
-prob_tree_orig <- predict(arvore_original, teste, type = "prob")[,2]
-prob_tree_limpa <- predict(arvore_limpa, teste_limpo, type = "prob")[,2]
-
-# --- 2. FUNÇÃO AUXILIAR PARA MÉTRICAS ---
-get_metrics <- function(pred_class, true_class, probs) {
-  cm <- confusionMatrix(pred_class, true_class)
-  roc_obj <- roc(true_class, probs, quiet = TRUE)
-  
-  return(c(
-    Acc = cm$overall['Accuracy'],
-    Sens = cm$byClass['Sensitivity'],
-    Spec = cm$byClass['Specificity'],
-    AUC = pROC::auc(roc_obj),
-    PR_AUC = PRAUC(probs, ifelse(true_class == levels(true_class)[2], 1, 0))
-  ))
-}
-
-# --- 3. CÁLCULO DAS MÉTRICAS ---
-m1 <- get_metrics(pred_log_orig, teste$condition, prob_log_orig)
-m2 <- get_metrics(pred_log_limpo, teste_limpo$condition, prob_log_limpo)
-m3 <- get_metrics(pred_tree_orig, teste$condition, prob_tree_orig)
-m4 <- get_metrics(pred_tree_limpa, teste_limpo$condition, prob_tree_limpa)
-
-# --- 4. TABELA FINAL ---
-comparativo_completo <- data.frame(
-  Modelo = c("Logística Original", "Logística Limpa", "Árvore Original", "Árvore Limpa"),
-  rbind(m1, m2, m3, m4)
-)
-pander(comparativo_completo, caption = "Comparativo de Performance no Teste (AUC e PR-AUC)")
-
-# --- 5. PRINT DAS MATRIZES DE CONFUSÃO ---
-cat("\n### MATRIZES DE CONFUSÃO ###\n")
-pander(cm_log_orig$table, caption = "Logística Original")
-pander(cm_log_limpo$table, caption = "Logística Limpa")
-pander(cm_tree_orig$table, caption = "Árvore Original")
-pander(cm_tree_limpa$table, caption = "Árvore Limpa")
 
 ```
 
 
+```{r}
+ggplot(tabela_ordenada, aes(x = Modelo, y = Media, color = Modelo)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = IC_Lower, ymax = IC_Upper), width = 0.2, linewidth = 1) +
+  facet_wrap(~Metrica, scales = "free_y") +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal() +
+  labs(
+    title = "Comparação de Modelos via Bootstrap (n=59 no teste)",
+    subtitle = "Pontos representam a média e barras representam o IC de 95%",
+    y = "Valor da Métrica",
+    x = ""
+  ) +
+  theme(
+    axis.text.x = element_blank(), # Remove o texto do eixo X para não sobrepor
+    strip.text = element_text(face = "bold", size = 10), # Estiliza o título dos quadros
+    legend.position = "bottom"
+  )
+```
+
+Esse gráfico mostra que o desempenho dos modelos parece ser equivalente entre os modelos, entretando, no PR-AUC, é possível observar que a árvore de decisão teve um valor muito inferior aos outros, ou seja, ela é um modelo muito sensível a pequenas mudanças.
+
+
+### Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e a árvore de decisão
+
+```{r}
+metricas_nomes <- c("Acurácia", "Precisão", "Recall", "AUC", "PR-AUC")
+resultados_testes <- data.frame()
+
+# --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---
+for (i in 1:5) {
+  dist_agrupada <- boot_agrupado$t[, i]
+  dist_arvore   <- boot_arvore$t[, i]
+  
+  # Diferença das distribuições (Agrupada - Árvore)
+  diff_dist <- dist_agrupada - dist_arvore
+  
+  # P-valor: proporção de vezes que a árvore empatou ou venceu
+  p_val <- mean(diff_dist <= 0)
+  
+  # Armazenando resultados
+  resultados_testes <- rbind(resultados_testes, data.frame(
+    Métrica = metricas_nomes[i],
+    Diferença_Média = mean(diff_dist),
+    P_Valor = p_val,
+    Significativo_05 = ifelse(p_val < 0.05, "Sim", "Não")
+  ))
+}
+
+# --- 3. EXIBIÇÃO DA TABELA ---
+pander(resultados_testes, 
+       caption = "Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão",
+       digits = 4)
+```
+
+### Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e nos dados originais
+```{r}
+metricas_nomes <- c("Acurácia", "Precisão", "Recall", "AUC", "PR-AUC")
+resultados_testes <- data.frame()
+
+# --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---
+for (i in 1:5) {
+  dist_agrupada <- boot_agrupado$t[, i]
+  dist_reduzido   <- boot_reduzido$t[, i]
+  
+  # Diferença das distribuições (Agrupada - Árvore)
+  diff_dist <- dist_agrupada - dist_reduzido
+  
+  # P-valor: proporção de vezes que a árvore empatou ou venceu
+  p_val <- mean(diff_dist <= 0)
+  
+  # Armazenando resultados
+  resultados_testes <- rbind(resultados_testes, data.frame(
+    Métrica = metricas_nomes[i],
+    Diferença_Média = mean(diff_dist),
+    P_Valor = p_val,
+    Significativo_05 = ifelse(p_val < 0.05, "Sim", "Não")
+  ))
+}
+
+# --- 3. EXIBIÇÃO DA TABELA ---
+pander(resultados_testes, 
+       caption = "Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão",
+       digits = 4)
+```
+
+
+# Conclusão
+
+
+Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais "comportados", o escolheremos como o melhor modelo, nessa análise.

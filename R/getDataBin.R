@@ -10,7 +10,7 @@ data2$condition <- factor(data2$condition,
                          levels = c(0, 1),
                          labels = c("Saudavel", "Doente"))
 
-data_limpo <- data2 %>%
+data_agrupado <- data2 %>%
   mutate(
     cp = case_when(
       cp %in% c(0, 1, 2) ~ "_com dor",
@@ -43,9 +43,9 @@ data_limpo <- data2 %>%
 set.seed(28)
 
 # Divisão treino-test
-index <- createDataPartition(data_limpo$condition, p = 0.80, list = FALSE)
-treino_limpo <- data_limpo[index, ]
-teste_limpo  <- data_limpo[-index, ]
+index <- createDataPartition(data_agrupado$condition, p = 0.80, list = FALSE)
+treino_agrupado <- data_agrupado[index, ]
+teste_agrupado  <- data_agrupado[-index, ]
 
 
 

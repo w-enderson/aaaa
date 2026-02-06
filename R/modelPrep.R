@@ -18,6 +18,6 @@ ctrl <- trainControl( method = "cv",
 set.seed(28)
 
 # Divisão treino-test
-index <- createDataPartition(data_limpo$condition, p = 0.80, list = FALSE)
-treino_limpo <- data_limpo[index, ]
-teste_limpo  <- data_limpo[-index, ]
+index <- createDataPartition(data_agrupado$condition, p = 0.80, list = FALSE)
+treino_limpo <- data_agrupado[index, ]
+teste_limpo  <- data_agrupado[-index, ]

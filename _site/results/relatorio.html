@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -67,15 +67,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1d4f84655f446305ac42a8f1abcf7405.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-883fcb54665cb35c022f5a38a2a72681.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -201,19 +200,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="modelagem-com-regressão-logística" class="level1">
 <h1>Modelagem com Regressão Logística</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"modelPrep.R"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"modelPrep.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="modelo-com-todas-as-variáveis" class="level2">
 <h2 class="anchored" data-anchor-id="modelo-com-todas-as-variáveis">Modelo com todas as variáveis</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>formula1 <span class="ot">&lt;-</span> condition <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> cp <span class="sc">+</span> thalach <span class="sc">+</span> exang <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>formula1 <span class="ot">&lt;-</span> condition <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> cp <span class="sc">+</span> thalach <span class="sc">+</span> exang <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                         oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal <span class="sc">+</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                         trestbps <span class="sc">+</span> chol <span class="sc">+</span> fbs <span class="sc">+</span> restecg</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>modelo1_ <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula1, <span class="at">data =</span> treino, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>modelo1_ <span class="ot">&lt;-</span> <span class="fu">glm</span>(formula1, <span class="at">data =</span> treino, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -254,12 +253,11 @@ AIC: 183.26
 Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 </div>
-<p>É possível observar que o modelo com as variáveis possui uma deviance muito menor, em relação ao modelo sem variáveis; ou seja, ele é significativo.</p>
 <p>O AIC foi de 183.26.</p>
 <p>Embora o modelo explique bem a variável alvo, é possível observar que a maioria das covariáveis não é estatísticamente significativa, segundo o teste de Wald.</p>
 <p>Para verificar isso, faremos um <strong>Teste de Razão de Verossimilhanças</strong>, verificando o impacto da retirada de cada variável.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">Anova</span>(modelo1_, <span class="at">type =</span> <span class="st">"III"</span>, <span class="at">test =</span> <span class="st">"LR"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">Anova</span>(modelo1_, <span class="at">type =</span> <span class="st">"III"</span>, <span class="at">test =</span> <span class="st">"LR"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Analysis of Deviance Table (Type III tests)</caption>
@@ -363,13 +361,13 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <p>Aqui é possível obervar que as variáveis que mais contribuem para o modelo são: sex, cp, oldpeak, slope, ca e thal</p>
 <p>Para verificar o impacto no modelo ao retirar essas variáveis, faremos o <strong>Teste de Razão de Verossimilhanças</strong> entre o modelo com todas as variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps, chol, fbs, restecg)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo reduzido ( com 6 variáveis )</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo reduzido ( com 6 variáveis )</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>modelo_reduzido_ <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span>  sex <span class="sc">+</span> cp <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                        oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> treino, </span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">anova</span>(modelo1_, modelo_reduzido_, <span class="at">test =</span> <span class="st">"Chisq"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">anova</span>(modelo1_, modelo_reduzido_, <span class="at">test =</span> <span class="st">"Chisq"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Analysis of Deviance Table</caption>
@@ -410,7 +408,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <p>O P-valor foi de 0.7863, ou seja, não há evidências de que o modelo com todas as variáveis seja melhor que o modelo reduzido. Então optamos pelo uso do modelo reduzido.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">Anova</span>(modelo_reduzido_, <span class="at">type =</span> <span class="st">"III"</span>, <span class="at">test =</span> <span class="st">"LR"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">Anova</span>(modelo_reduzido_, <span class="at">type =</span> <span class="st">"III"</span>, <span class="at">test =</span> <span class="st">"LR"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Analysis of Deviance Table (Type III tests)</caption>
@@ -474,7 +472,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <section id="analisando-os-coeficientes-do-modelo-reduzido" class="level2">
 <h2 class="anchored" data-anchor-id="analisando-os-coeficientes-do-modelo-reduzido">Analisando os coeficientes do modelo reduzido</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_reduzido_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_reduzido_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -508,14 +506,14 @@ AIC: 171.99
 Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 </div>
-<p>O AIC do modelo reduzido (171.99) foi menor que o do modelo com todas as variáveis, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.</p>
+<p>O AIC do modelo reduzido (171.99) foi menor que o do modelo completo, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_reduzido_))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_reduzido_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Waiting for profiling to be done...</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_reduzido_))</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_reduzido_))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -527,7 +525,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Odds Ratios, Intervalos de Confiança e Amplitude</caption>
@@ -646,7 +644,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <p>É possível observar que alguns coeficientes estimados são muito incertos (o modelo não conseguiu definir se a associação entre a respectiva variável e o target era positiva ou negativa);</p>
 <p>Essas variáveis foram : cp2, slope2 e thal1</p>
 <p>Outros coeficientes tinham IC com amplitude grande demais, como foi o caso de cp3, ca3, ca2</p>
-<p>Ou seja, o modelo não conseguiu estimar precisamente os coeficientes</p>
+<p>Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes</p>
 <p>Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.</p>
 </section>
 <section id="treinando-modelo-com-agrupamento-de-classes-subrepresentadas" class="level2">
@@ -674,18 +672,18 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelo_limpo <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelo_agrupado <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> treino_limpo, </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> treino_agrupado, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_limpo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_agrupado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 glm(formula = condition ~ sex + cp + oldpeak + slope + ca + thal, 
-    family = "binomial", data = treino_limpo)
+    family = "binomial", data = treino_agrupado)
 
 Coefficients:
                 Estimate Std. Error z value Pr(&gt;|z|)    
@@ -709,12 +707,12 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_limpo))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_agrupado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Waiting for profiling to be done...</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_limpo))</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_agrupado))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -726,7 +724,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Odds Ratios, Intervalos de Confiança e Amplitude</caption>
@@ -800,459 +798,398 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </table>
 </div>
 </div>
-<p>Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os resultados obtidos na EDA;</p>
+<p>Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os insights obtidos na EDA;</p>
 </section>
 </section>
-<section id="verificando-o-desempenho-dos-modelos-no-conjunto-de-teste" class="level1">
-<h1>Verificando o desempenho dos modelos no conjunto de teste</h1>
+<section id="criando-árvore-de-decisão-de-acordo-com-as-variáveis-usadas-no-modelo-logístico-reduzido" class="level1">
+<h1>Criando árvore de decisão de acordo com as variáveis usadas no modelo logístico reduzido</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">28</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">train</span>( condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                    oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> treino,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method =</span> <span class="st">"glm"</span>,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">trControl =</span> ctrl)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">train</span>( condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                    oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> treino_limpo,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method =</span> <span class="st">"glm"</span>,</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">trControl =</span> ctrl)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(<span class="at">original =</span> modelo1, <span class="at">limpo =</span> modelo2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(resultados)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados Originais</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>arvore_original <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> treino, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"class"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados com classes agrupadas </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>arvore_limpa <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> treino_limpo, </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"class"</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotando das árvores</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_original, <span class="at">main =</span> <span class="st">"Árvore: Dados Originais"</span>, </span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_limpa, <span class="at">main =</span> <span class="st">"Árvore: Dados com classes agrupadas"</span>, </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>As duas árvores geradas são iguais, isso mostra que o agrupamento das classes subrepresentadas faz sentido;</p>
+<section id="verificando-o-desempenho-do-modelo-no-conjunto-de-teste-via-boostrap" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-o-desempenho-do-modelo-no-conjunto-de-teste-via-boostrap">Verificando o desempenho do modelo no conjunto de teste (via boostrap)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz para o modelo original</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo1, treino)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>m_original <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(p1, treino<span class="sc">$</span>condition)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz para o modelo limpo</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo2, treino_limpo)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>m_limpo <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(p2, treino_limpo<span class="sc">$</span>condition)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibindo lado a lado com pander</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(m_original<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Matriz de Confusão: Modelo Original"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BOOTSTRAP</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>n_boot <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap para os 3 modelos principais</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>boot_reduzido <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste, <span class="at">statistic =</span> calc_boot_metrics, </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> modelo_reduzido_, <span class="at">tipo_modelo =</span> <span class="st">"glm"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>boot_agrupado <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste_agrupado, <span class="at">statistic =</span> calc_boot_metrics, </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> modelo_agrupado, <span class="at">tipo_modelo =</span> <span class="st">"glm"</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>boot_arvore   <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste_agrupado, <span class="at">statistic =</span> calc_boot_metrics, </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> arvore_limpa, <span class="at">tipo_modelo =</span> <span class="st">"tree"</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>tabela_bootstrap <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_reduzido, <span class="st">"Logística Reduzida"</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_agrupado, <span class="st">"Logística Agrupada"</span>),</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_arvore, <span class="st">"Árvore de Decisão"</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>tabela_ordenada <span class="ot">&lt;-</span> tabela_bootstrap <span class="sc">%&gt;%</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Metrica, <span class="fu">desc</span>(Modelo))</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_ordenada, </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Métricas de Performance Ordenadas (Média e IC de 95%)"</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">split.table =</span> <span class="cn">Inf</span>, <span class="co"># Evita que a tabela quebre em colunas</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Matriz de Confusão: Modelo Original</caption>
+<caption>Métricas de Performance Ordenadas (Média e IC de 95%)</caption>
 <colgroup>
-<col style="width: 20%">
+<col style="width: 29%">
+<col style="width: 15%">
+<col style="width: 12%">
 <col style="width: 15%">
 <col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
+<th style="text-align: center;">Modelo</th>
+<th style="text-align: center;">Metrica</th>
+<th style="text-align: center;">Media</th>
+<th style="text-align: center;">IC_Lower</th>
+<th style="text-align: center;">IC_Upper</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">116</td>
-<td style="text-align: center;">15</td>
+<td style="text-align: center;">Árvore de Decisão</td>
+<td style="text-align: center;">AUC</td>
+<td style="text-align: center;">0.8279</td>
+<td style="text-align: center;">0.7137</td>
+<td style="text-align: center;">0.9306</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">95</td>
+<td style="text-align: center;">Logística Reduzida</td>
+<td style="text-align: center;">AUC</td>
+<td style="text-align: center;">0.8683</td>
+<td style="text-align: center;">0.7564</td>
+<td style="text-align: center;">0.9628</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(m_limpo<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Matriz de Confusão: Modelo Limpo"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Matriz de Confusão: Modelo Limpo</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">112</td>
-<td style="text-align: center;">18</td>
+<td style="text-align: center;">Logística Agrupada</td>
+<td style="text-align: center;">AUC</td>
+<td style="text-align: center;">0.8836</td>
+<td style="text-align: center;">0.775</td>
+<td style="text-align: center;">0.9674</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">92</td>
+<td style="text-align: center;">Árvore de Decisão</td>
+<td style="text-align: center;">Acurácia</td>
+<td style="text-align: center;">0.8309</td>
+<td style="text-align: center;">0.7288</td>
+<td style="text-align: center;">0.9153</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Logística Reduzida</td>
+<td style="text-align: center;">Acurácia</td>
+<td style="text-align: center;">0.8112</td>
+<td style="text-align: center;">0.7119</td>
+<td style="text-align: center;">0.8983</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Logística Agrupada</td>
+<td style="text-align: center;">Acurácia</td>
+<td style="text-align: center;">0.7972</td>
+<td style="text-align: center;">0.6949</td>
+<td style="text-align: center;">0.8983</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Árvore de Decisão</td>
+<td style="text-align: center;">PR-AUC</td>
+<td style="text-align: center;">0.3507</td>
+<td style="text-align: center;">0.2024</td>
+<td style="text-align: center;">0.5061</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Logística Reduzida</td>
+<td style="text-align: center;">PR-AUC</td>
+<td style="text-align: center;">0.8313</td>
+<td style="text-align: center;">0.7126</td>
+<td style="text-align: center;">0.9267</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Logística Agrupada</td>
+<td style="text-align: center;">PR-AUC</td>
+<td style="text-align: center;">0.8415</td>
+<td style="text-align: center;">0.7232</td>
+<td style="text-align: center;">0.9297</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Árvore de Decisão</td>
+<td style="text-align: center;">Precisão</td>
+<td style="text-align: center;">0.8234</td>
+<td style="text-align: center;">0.6875</td>
+<td style="text-align: center;">0.9429</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Logística Reduzida</td>
+<td style="text-align: center;">Precisão</td>
+<td style="text-align: center;">0.8137</td>
+<td style="text-align: center;">0.6748</td>
+<td style="text-align: center;">0.9355</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Logística Agrupada</td>
+<td style="text-align: center;">Precisão</td>
+<td style="text-align: center;">0.8136</td>
+<td style="text-align: center;">0.6762</td>
+<td style="text-align: center;">0.9376</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Árvore de Decisão</td>
+<td style="text-align: center;">Recall</td>
+<td style="text-align: center;">0.8756</td>
+<td style="text-align: center;">0.75</td>
+<td style="text-align: center;">0.9722</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Logística Reduzida</td>
+<td style="text-align: center;">Recall</td>
+<td style="text-align: center;">0.8432</td>
+<td style="text-align: center;">0.7097</td>
+<td style="text-align: center;">0.9584</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Logística Agrupada</td>
+<td style="text-align: center;">Recall</td>
+<td style="text-align: center;">0.8131</td>
+<td style="text-align: center;">0.6667</td>
+<td style="text-align: center;">0.9375</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Treinando a Árvore de Decisão com Dados Originais</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>arvore_original <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> treino, </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"class"</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Treinando a Árvore de Decisão com Dados Limpos</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>arvore_limpa <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> treino_limpo, </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"class"</span>)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Plotando as árvores lado a lado para comparação</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co"># Divide a tela em 2 colunas</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_original, <span class="at">main =</span> <span class="st">"Árvore: Dados Originais"</span>, </span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_limpa, <span class="at">main =</span> <span class="st">"Árvore: Dados Limpos"</span>, </span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_ordenada, <span class="fu">aes</span>(<span class="at">x =</span> Modelo, <span class="at">y =</span> Media, <span class="at">color =</span> Modelo)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> IC_Lower, <span class="at">ymax =</span> IC_Upper), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Metrica, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Comparação de Modelos via Bootstrap (n=59 no teste)"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Pontos representam a média e barras representam o IC de 95%"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Valor da Métrica"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="co"># Remove o texto do eixo X para não sobrepor</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>), <span class="co"># Estiliza o título dos quadros</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Esse gráfico mostra que o desempenho dos modelos parece ser equivalente entre os modelos, entretando, no PR-AUC, é possível observar que a árvore de decisão teve um valor muito inferior aos outros, ou seja, ela é um modelo muito sensível a pequenas mudanças.</p>
+<section id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-a-árvore-de-decisão" class="level3">
+<h3 class="anchored" data-anchor-id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-a-árvore-de-decisão">Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e a árvore de decisão</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. PREDIÇÕES (REGRESSÃO LOGÍSTICA) ---</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo 1 (Original) no Teste Original</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>pred_log_orig <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo1, teste)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>cm_log_orig <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_log_orig, teste<span class="sc">$</span>condition)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo 2 (Limpo) no Teste Limpo</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>pred_log_limpo <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo2, teste_limpo)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>cm_log_limpo <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_log_limpo, teste_limpo<span class="sc">$</span>condition)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. PREDIÇÕES (ÁRVORE DE DECISÃO) ---</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore Original no Teste Original</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>pred_tree_orig <span class="ot">&lt;-</span> <span class="fu">predict</span>(arvore_original, teste, <span class="at">type =</span> <span class="st">"class"</span>)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>cm_tree_orig <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_tree_orig, teste<span class="sc">$</span>condition)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore Limpa no Teste Limpo</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>pred_tree_limpa <span class="ot">&lt;-</span> <span class="fu">predict</span>(arvore_limpa, teste_limpo, <span class="at">type =</span> <span class="st">"class"</span>)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>cm_tree_limpa <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_tree_limpa, teste_limpo<span class="sc">$</span>condition)</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. TABELA COMPARATIVA DE ACURÁCIA ---</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>comparativo_teste <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">Modelo =</span> <span class="fu">c</span>(<span class="st">"Logística Original"</span>, <span class="st">"Logística Limpa"</span>, <span class="st">"Árvore Original"</span>, <span class="st">"Árvore Limpa"</span>),</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">Acuracia =</span> <span class="fu">c</span>(cm_log_orig<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>], cm_log_limpo<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>], </span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>               cm_tree_orig<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>], cm_tree_limpa<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>]),</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sensibilidade =</span> <span class="fu">c</span>(cm_log_orig<span class="sc">$</span>byClass[<span class="st">'Sensitivity'</span>], cm_log_limpo<span class="sc">$</span>byClass[<span class="st">'Sensitivity'</span>], </span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>                    cm_tree_orig<span class="sc">$</span>byClass[<span class="st">'Sensitivity'</span>], cm_tree_limpa<span class="sc">$</span>byClass[<span class="st">'Sensitivity'</span>]),</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">Especificidade =</span> <span class="fu">c</span>(cm_log_orig<span class="sc">$</span>byClass[<span class="st">'Specificity'</span>], cm_log_limpo<span class="sc">$</span>byClass[<span class="st">'Specificity'</span>], </span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>                     cm_tree_orig<span class="sc">$</span>byClass[<span class="st">'Specificity'</span>], cm_tree_limpa<span class="sc">$</span>byClass[<span class="st">'Specificity'</span>])</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(comparativo_teste, <span class="at">caption =</span> <span class="st">"Performance no Conjunto de Teste"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>metricas_nomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Acurácia"</span>, <span class="st">"Precisão"</span>, <span class="st">"Recall"</span>, <span class="st">"AUC"</span>, <span class="st">"PR-AUC"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>resultados_testes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  dist_agrupada <span class="ot">&lt;-</span> boot_agrupado<span class="sc">$</span>t[, i]</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  dist_arvore   <span class="ot">&lt;-</span> boot_arvore<span class="sc">$</span>t[, i]</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Diferença das distribuições (Agrupada - Árvore)</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  diff_dist <span class="ot">&lt;-</span> dist_agrupada <span class="sc">-</span> dist_arvore</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># P-valor: proporção de vezes que a árvore empatou ou venceu</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(diff_dist <span class="sc">&lt;=</span> <span class="dv">0</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Armazenando resultados</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  resultados_testes <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resultados_testes, <span class="fu">data.frame</span>(</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    Métrica <span class="ot">=</span> metricas_nomes[i],</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    Diferença_Média <span class="ot">=</span> <span class="fu">mean</span>(diff_dist),</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_Valor =</span> p_val,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Significativo_05 =</span> <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">"Sim"</span>, <span class="st">"Não"</span>)</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. EXIBIÇÃO DA TABELA ---</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(resultados_testes, </span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"</span>,</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Performance no Conjunto de Teste</caption>
+<caption>Teste de Hipótese via Bootstrap: Logística Agrupada vs.&nbsp;Árvore de Decisão</caption>
 <colgroup>
-<col style="width: 29%">
 <col style="width: 15%">
-<col style="width: 22%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Modelo</th>
-<th style="text-align: center;">Acuracia</th>
-<th style="text-align: center;">Sensibilidade</th>
-<th style="text-align: center;">Especificidade</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Logística Original</td>
-<td style="text-align: center;">0.8136</td>
-<td style="text-align: center;">0.8438</td>
-<td style="text-align: center;">0.7778</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Limpa</td>
-<td style="text-align: center;">0.7966</td>
-<td style="text-align: center;">0.8125</td>
-<td style="text-align: center;">0.7778</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Árvore Original</td>
-<td style="text-align: center;">0.8305</td>
-<td style="text-align: center;">0.875</td>
-<td style="text-align: center;">0.7778</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Árvore Limpa</td>
-<td style="text-align: center;">0.8305</td>
-<td style="text-align: center;">0.875</td>
-<td style="text-align: center;">0.7778</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. PREDIÇÕES DE PROBABILIDADE (Necessárias para AUC) ---</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>prob_log_orig  <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo1, teste, <span class="at">type =</span> <span class="st">"prob"</span>)[,<span class="dv">2</span>]</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>prob_log_limpo <span class="ot">&lt;-</span> <span class="fu">predict</span>(modelo2, teste_limpo, <span class="at">type =</span> <span class="st">"prob"</span>)[,<span class="dv">2</span>]</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>prob_tree_orig <span class="ot">&lt;-</span> <span class="fu">predict</span>(arvore_original, teste, <span class="at">type =</span> <span class="st">"prob"</span>)[,<span class="dv">2</span>]</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>prob_tree_limpa <span class="ot">&lt;-</span> <span class="fu">predict</span>(arvore_limpa, teste_limpo, <span class="at">type =</span> <span class="st">"prob"</span>)[,<span class="dv">2</span>]</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. FUNÇÃO AUXILIAR PARA MÉTRICAS ---</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>get_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(pred_class, true_class, probs) {</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(pred_class, true_class)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  roc_obj <span class="ot">&lt;-</span> <span class="fu">roc</span>(true_class, probs, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Acc =</span> cm<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>],</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sens =</span> cm<span class="sc">$</span>byClass[<span class="st">'Sensitivity'</span>],</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Spec =</span> cm<span class="sc">$</span>byClass[<span class="st">'Specificity'</span>],</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">AUC =</span> pROC<span class="sc">::</span><span class="fu">auc</span>(roc_obj),</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">PR_AUC =</span> <span class="fu">PRAUC</span>(probs, <span class="fu">ifelse</span>(true_class <span class="sc">==</span> <span class="fu">levels</span>(true_class)[<span class="dv">2</span>], <span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. CÁLCULO DAS MÉTRICAS ---</span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">get_metrics</span>(pred_log_orig, teste<span class="sc">$</span>condition, prob_log_orig)</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">get_metrics</span>(pred_log_limpo, teste_limpo<span class="sc">$</span>condition, prob_log_limpo)</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">get_metrics</span>(pred_tree_orig, teste<span class="sc">$</span>condition, prob_tree_orig)</span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">get_metrics</span>(pred_tree_limpa, teste_limpo<span class="sc">$</span>condition, prob_tree_limpa)</span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. TABELA FINAL ---</span></span>
-<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>comparativo_completo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">Modelo =</span> <span class="fu">c</span>(<span class="st">"Logística Original"</span>, <span class="st">"Logística Limpa"</span>, <span class="st">"Árvore Original"</span>, <span class="st">"Árvore Limpa"</span>),</span>
-<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind</span>(m1, m2, m3, m4)</span>
-<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(comparativo_completo, <span class="at">caption =</span> <span class="st">"Comparativo de Performance no Teste (AUC e PR-AUC)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Comparativo de Performance no Teste (AUC e PR-AUC) (continued below)</caption>
-<colgroup>
-<col style="width: 12%">
-<col style="width: 29%">
-<col style="width: 20%">
+<col style="width: 25%">
+<col style="width: 13%">
 <col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Modelo</th>
-<th style="text-align: center;">Acc.Accuracy</th>
-<th style="text-align: center;">Sens.Sensitivity</th>
+<th style="text-align: center;">Métrica</th>
+<th style="text-align: center;">Diferença_Média</th>
+<th style="text-align: center;">P_Valor</th>
+<th style="text-align: center;">Significativo_05</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>m1</strong></td>
-<td style="text-align: center;">Logística Original</td>
-<td style="text-align: center;">0.8136</td>
-<td style="text-align: center;">0.8438</td>
+<td style="text-align: center;">Acurácia</td>
+<td style="text-align: center;">-0.03378</td>
+<td style="text-align: center;">0.717</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>m2</strong></td>
-<td style="text-align: center;">Logística Limpa</td>
-<td style="text-align: center;">0.7966</td>
-<td style="text-align: center;">0.8125</td>
+<td style="text-align: center;">Precisão</td>
+<td style="text-align: center;">-0.009789</td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><strong>m3</strong></td>
-<td style="text-align: center;">Árvore Original</td>
-<td style="text-align: center;">0.8305</td>
-<td style="text-align: center;">0.875</td>
+<td style="text-align: center;">Recall</td>
+<td style="text-align: center;">-0.06255</td>
+<td style="text-align: center;">0.759</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>m4</strong></td>
-<td style="text-align: center;">Árvore Limpa</td>
-<td style="text-align: center;">0.8305</td>
-<td style="text-align: center;">0.875</td>
+<td style="text-align: center;">AUC</td>
+<td style="text-align: center;">0.0557</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">Não</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">PR-AUC</td>
+<td style="text-align: center;">0.4908</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">Sim</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</section>
+<section id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-nos-dados-originais" class="level3">
+<h3 class="anchored" data-anchor-id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-nos-dados-originais">Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e nos dados originais</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>metricas_nomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Acurácia"</span>, <span class="st">"Precisão"</span>, <span class="st">"Recall"</span>, <span class="st">"AUC"</span>, <span class="st">"PR-AUC"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>resultados_testes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  dist_agrupada <span class="ot">&lt;-</span> boot_agrupado<span class="sc">$</span>t[, i]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  dist_reduzido   <span class="ot">&lt;-</span> boot_reduzido<span class="sc">$</span>t[, i]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Diferença das distribuições (Agrupada - Árvore)</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  diff_dist <span class="ot">&lt;-</span> dist_agrupada <span class="sc">-</span> dist_reduzido</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># P-valor: proporção de vezes que a árvore empatou ou venceu</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(diff_dist <span class="sc">&lt;=</span> <span class="dv">0</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Armazenando resultados</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  resultados_testes <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resultados_testes, <span class="fu">data.frame</span>(</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    Métrica <span class="ot">=</span> metricas_nomes[i],</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    Diferença_Média <span class="ot">=</span> <span class="fu">mean</span>(diff_dist),</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_Valor =</span> p_val,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Significativo_05 =</span> <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">"Sim"</span>, <span class="st">"Não"</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. EXIBIÇÃO DA TABELA ---</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(resultados_testes, </span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"</span>,</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
+<caption>Teste de Hipótese via Bootstrap: Logística Agrupada vs.&nbsp;Árvore de Decisão</caption>
 <colgroup>
-<col style="width: 12%">
+<col style="width: 15%">
+<col style="width: 25%">
+<col style="width: 13%">
 <col style="width: 26%">
-<col style="width: 12%">
-<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Spec.Specificity</th>
-<th style="text-align: center;">AUC</th>
-<th style="text-align: center;">PR_AUC</th>
+<th style="text-align: center;">Métrica</th>
+<th style="text-align: center;">Diferença_Média</th>
+<th style="text-align: center;">P_Valor</th>
+<th style="text-align: center;">Significativo_05</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>m1</strong></td>
-<td style="text-align: center;">0.7778</td>
-<td style="text-align: center;">0.8704</td>
-<td style="text-align: center;">0.8558</td>
+<td style="text-align: center;">Acurácia</td>
+<td style="text-align: center;">-0.014</td>
+<td style="text-align: center;">0.615</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>m2</strong></td>
-<td style="text-align: center;">0.7778</td>
-<td style="text-align: center;">0.8819</td>
-<td style="text-align: center;">0.8641</td>
+<td style="text-align: center;">Precisão</td>
+<td style="text-align: center;">-0.0001247</td>
+<td style="text-align: center;">0.508</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><strong>m3</strong></td>
-<td style="text-align: center;">0.7778</td>
-<td style="text-align: center;">0.8281</td>
-<td style="text-align: center;">0.352</td>
+<td style="text-align: center;">Recall</td>
+<td style="text-align: center;">-0.03017</td>
+<td style="text-align: center;">0.638</td>
+<td style="text-align: center;">Não</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><strong>m4</strong></td>
-<td style="text-align: center;">0.7778</td>
-<td style="text-align: center;">0.8281</td>
-<td style="text-align: center;">0.352</td>
+<td style="text-align: center;">AUC</td>
+<td style="text-align: center;">0.01536</td>
+<td style="text-align: center;">0.417</td>
+<td style="text-align: center;">Não</td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 5. PRINT DAS MATRIZES DE CONFUSÃO ---</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">### MATRIZES DE CONFUSÃO ###</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-### MATRIZES DE CONFUSÃO ###</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(cm_log_orig<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Logística Original"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Logística Original</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">27</td>
-<td style="text-align: center;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">21</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(cm_log_limpo<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Logística Limpa"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Logística Limpa</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">26</td>
-<td style="text-align: center;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">21</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(cm_tree_orig<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Árvore Original"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Árvore Original</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">28</td>
-<td style="text-align: center;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">21</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(cm_tree_limpa<span class="sc">$</span>table, <span class="at">caption =</span> <span class="st">"Árvore Limpa"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Árvore Limpa</caption>
-<colgroup>
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">&nbsp;</th>
-<th style="text-align: center;">Saudavel</th>
-<th style="text-align: center;">Doente</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><strong>Saudavel</strong></td>
-<td style="text-align: center;">28</td>
-<td style="text-align: center;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;"><strong>Doente</strong></td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">21</td>
+<td style="text-align: center;">PR-AUC</td>
+<td style="text-align: center;">0.01019</td>
+<td style="text-align: center;">0.435</td>
+<td style="text-align: center;">Não</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+</section>
+</section>
+</section>
+<section id="conclusão" class="level1">
+<h1>Conclusão</h1>
+<p>Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais “comportados”, o escolheremos como o melhor modelo, nessa análise.</p>
 
 
 </section>
@@ -1309,14 +1246,13 @@ Number of Fisher Scoring iterations: 6</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

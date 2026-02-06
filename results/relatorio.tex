@@ -1,0 +1,1114 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Análise Estatística de Fatores de Risco para Doença Coronária},
+  pdfauthor={Wenderson Santos},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Análise Estatística de Fatores de Risco para Doença Coronária}
+\author{Wenderson Santos}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introdução}\label{introduuxe7uxe3o}
+
+O dataset provém de um estudo que analisou 297 pacientes na Cleveland
+Clinic para avaliação da Doença Coronária;
+
+O experimento envolveu 3 estágios:
+
+\begin{itemize}
+\tightlist
+\item
+  Teste de esforço (protocolo de Bruce)
+\item
+  Cinefluoroscopia
+\item
+  Angiografia coronária
+\item
+  Cintilografia com Tálio-201
+\end{itemize}
+
+\subsection{Variáveis analisadas}\label{variuxe1veis-analisadas}
+
+\begin{itemize}
+\item
+  age
+\item
+  sex
+\item
+  cp : tipo de dor no peito
+
+  \begin{itemize}
+  \item
+    Angina Típica: Atende a três critérios (localização atrás do osso do
+    peito, provocada por esforço/estresse e aliviada por repouso).
+  \item
+    Angina Atípica: Atende a apenas dois desses critérios.
+  \item
+    Dor Não Anginosa: Atende a apenas um ou nenhum dos critérios,
+    sugerindo que a causa pode ser muscular ou gástrica (não cardíaca).
+  \item
+    Assintomático: O paciente não sente dor, mas o médico ainda assim
+    solicitou os exames devido a outros fatores de risco (como idade ou
+    histórico familiar).
+  \end{itemize}
+\item
+  thalach : Frequência cardíaca máxima atingida antes da exaustão ou
+  sintomas (no teste de esforço).
+\item
+  exang : Indica se o paciente sentiu angina (dor) durante o exercício.
+\item
+  oldpeak : diferença entre a posição do segmento ST (ECG) no repouso e
+  no pico do esforço (thalac) (quanto maior essa diferença, maior é a
+  área do coração que sofre por falta de sangue)
+\item
+  slope : Enquanto o oldpeak diz o quanto a linha afundou, o slope diz
+  como ela se comporta logo após o afundamento. Existem três tipos
+  principais de inclinação:
+
+  \begin{itemize}
+  \item
+    Value 0: Upsloping (Ascendente): A linha afunda, mas sobe rápido. É
+    comum em exercícios intensos e nem sempre indica doença grave.
+  \item
+    Value 1: Flat (Plano): A linha afunda e fica ``reta''. É um sinal
+    clássico e preocupante de isquemia.
+  \item
+    Value 2: Downsloping (Descendente): A linha afunda e continua
+    descendo. É o sinal mais grave de todos, indicando que o coração
+    está em alto sofrimento isquêmico. (mesmo após a interrupção do
+    esforço)
+  \end{itemize}
+\item
+  ca : Número de vasos principais com depósitos de cálcio ou
+  interrupções no fluxo.
+
+  \begin{itemize}
+  \item
+    0: Nenhuma calcificação significativa (indício de artérias limpas)
+  \item
+    1, 2 o u 3: Indica que a doença está presente em um, dois ou três
+    vasos principais.
+  \end{itemize}
+\item
+  thal : Avalia se o sangue está chegando a todas as partes do coração
+  durante o repouso e após o esforço.
+
+  \begin{itemize}
+  \item
+    0 = Normal: O contraste se distribui uniformemente por todo o
+    coração.
+  \item
+    1 = Fixed Defect (Defeito Fixo): Uma parte do coração não recebe o
+    contraste nem no esforço, nem no repouso. Isso geralmente indica
+    tecido morto (cicatriz de um infarto antigo).
+  \item
+    2 = Reversable Defect (Defeito Reversível): O coração parece normal
+    em repouso, mas ``falta sangue'' em alguma região durante o esforço.
+    Isso é o sinal clássico de isquemia ativa: a artéria está entupida,
+    mas o tecido ainda está vivo e sofrendo.
+  \end{itemize}
+\item
+  condition (target)
+\item
+  trestbps : É a pressão arterial medida no momento da internação.
+\item
+  fbs : Glicemia de Jejum é maior ou menor que 120mg/dl (binário)
+\item
+  chol : nível total de colesterol no sangue.
+\item
+  restecg :
+
+  \begin{itemize}
+  \item
+    Value 0 (Normal): O coração em repouso não apresenta irregularidades
+    elétricas.
+  \item
+    Value 1 (Anormalidade de Onda ST-T): O coração já mostra sinais de
+    sofrimento mesmo sem fazer esforço. É um sinal de alerta precoce.
+  \item
+    Value 2 (Hipertrofia Ventricular Esquerda): Indica que o músculo do
+    coração está ``inchado'' (grosso), geralmente por ter que fazer
+    muita força para bombear o sangue contra uma pressão alta crônica.
+  \end{itemize}
+\end{itemize}
+
+\section{Modelagem com Regressão
+Logística}\label{modelagem-com-regressuxe3o-loguxedstica}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(here}\SpecialCharTok{::}\FunctionTok{here}\NormalTok{(}\StringTok{"R"}\NormalTok{, }\StringTok{"modelPrep.R"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Modelo com todas as
+variáveis}\label{modelo-com-todas-as-variuxe1veis}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{formula1 }\OtherTok{\textless{}{-}}\NormalTok{ condition }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ cp }\SpecialCharTok{+}\NormalTok{ thalach }\SpecialCharTok{+}\NormalTok{ exang }\SpecialCharTok{+}
+\NormalTok{                         oldpeak }\SpecialCharTok{+}\NormalTok{ slope }\SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{+}\NormalTok{ thal }\SpecialCharTok{+}
+\NormalTok{                         trestbps }\SpecialCharTok{+}\NormalTok{ chol }\SpecialCharTok{+}\NormalTok{ fbs }\SpecialCharTok{+}\NormalTok{ restecg}
+
+\NormalTok{modelo1\_ }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(formula1, }\AttributeTok{data =}\NormalTok{ treino, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(modelo1\_)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = formula1, family = "binomial", data = treino)
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -6.194972   3.665480  -1.690 0.091012 .  
+## age         -0.026817   0.029325  -0.914 0.360473    
+## sex1         1.751307   0.623152   2.810 0.004948 ** 
+## cp1          1.905287   0.923121   2.064 0.039021 *  
+## cp2          0.321896   0.847290   0.380 0.704011    
+## cp3          2.768984   0.864891   3.202 0.001367 ** 
+## thalach     -0.011517   0.012639  -0.911 0.362196    
+## exang1       0.337282   0.550815   0.612 0.540317    
+## oldpeak      0.649698   0.283217   2.294 0.021791 *  
+## slope1       1.341601   0.600799   2.233 0.025547 *  
+## slope2       0.402313   1.023407   0.393 0.694237    
+## ca1          2.575920   0.637209   4.043 5.29e-05 ***
+## ca2          3.119482   0.851992   3.661 0.000251 ***
+## ca3          2.982628   1.206518   2.472 0.013432 *  
+## thal1       -0.336710   0.979476  -0.344 0.731023    
+## thal2        1.486334   0.518928   2.864 0.004180 ** 
+## trestbps     0.014047   0.014133   0.994 0.320261    
+## chol         0.005760   0.005651   1.019 0.308039    
+## fbs1        -0.407723   0.701053  -0.582 0.560845    
+## restecg1     1.120803   3.359086   0.334 0.738634    
+## restecg2     0.261999   0.460966   0.568 0.569784    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 328.58  on 237  degrees of freedom
+## Residual deviance: 141.26  on 217  degrees of freedom
+## AIC: 183.26
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+O AIC foi de 183.26.
+
+Embora o modelo explique bem a variável alvo, é possível observar que a
+maioria das covariáveis não é estatísticamente significativa, segundo o
+teste de Wald.
+
+Para verificar isso, faremos um \textbf{Teste de Razão de
+Verossimilhanças}, verificando o impacto da retirada de cada variável.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pander}\NormalTok{(}\FunctionTok{Anova}\NormalTok{(modelo1\_, }\AttributeTok{type =} \StringTok{"III"}\NormalTok{, }\AttributeTok{test =} \StringTok{"LR"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2083}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1806}}@{}}
+\caption{Analysis of Deviance Table (Type III tests)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LR Chisq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chisq)
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LR Chisq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chisq)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{age} & 0.8384 & 1 & 0.3599 \\
+\textbf{sex} & 8.776 & 1 & 0.003053 \\
+\textbf{cp} & 20.58 & 3 & 0.0001287 \\
+\textbf{thalach} & 0.8493 & 1 & 0.3568 \\
+\textbf{exang} & 0.3705 & 1 & 0.5427 \\
+\textbf{oldpeak} & 5.789 & 1 & 0.01612 \\
+\textbf{slope} & 5.689 & 2 & 0.05818 \\
+\textbf{ca} & 30.8 & 3 & 9.375e-07 \\
+\textbf{thal} & 10.29 & 2 & 0.005832 \\
+\textbf{trestbps} & 0.9972 & 1 & 0.318 \\
+\textbf{chol} & 1.046 & 1 & 0.3065 \\
+\textbf{fbs} & 0.3411 & 1 & 0.5592 \\
+\textbf{restecg} & 0.4147 & 2 & 0.8127 \\
+\end{longtable}
+
+Aqui é possível obervar que as variáveis que mais contribuem para o
+modelo são: sex, cp, oldpeak, slope, ca e thal
+
+Para verificar o impacto no modelo ao retirar essas variáveis, faremos o
+\textbf{Teste de Razão de Verossimilhanças} entre o modelo com todas as
+variáveis e o modelo sem as variáveis (age, thalach, exang, trestbps,
+chol, fbs, restecg)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Modelo reduzido ( com 6 variáveis )}
+\NormalTok{modelo\_reduzido\_ }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(condition }\SpecialCharTok{\textasciitilde{}}\NormalTok{  sex }\SpecialCharTok{+}\NormalTok{ cp }\SpecialCharTok{+}
+\NormalTok{                        oldpeak }\SpecialCharTok{+}\NormalTok{ slope }\SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{+}\NormalTok{ thal,}
+                    \AttributeTok{data =}\NormalTok{ treino, }
+                    \AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+
+\FunctionTok{pander}\NormalTok{(}\FunctionTok{anova}\NormalTok{(modelo1\_, modelo\_reduzido\_, }\AttributeTok{test =} \StringTok{"Chisq"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1806}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}@{}}
+\caption{Analysis of Deviance Table}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Resid. Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Resid. Dev
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Deviance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chi)
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Resid. Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Resid. Dev
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Deviance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chi)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+217 & 141.3 & NA & NA & NA \\
+225 & 146 & -8 & -4.728 & 0.7863 \\
+\end{longtable}
+
+O P-valor foi de 0.7863, ou seja, não há evidências de que o modelo com
+todas as variáveis seja melhor que o modelo reduzido. Então optamos pelo
+uso do modelo reduzido.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pander}\NormalTok{(}\FunctionTok{Anova}\NormalTok{(modelo\_reduzido\_, }\AttributeTok{type =} \StringTok{"III"}\NormalTok{, }\AttributeTok{test =} \StringTok{"LR"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1944}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0694}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1806}}@{}}
+\caption{Analysis of Deviance Table (Type III tests)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LR Chisq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chisq)
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LR Chisq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pr(\textgreater Chisq)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{sex} & 7.552 & 1 & 0.005995 \\
+\textbf{cp} & 33.87 & 3 & 2.114e-07 \\
+\textbf{oldpeak} & 8.84 & 1 & 0.002947 \\
+\textbf{slope} & 7.529 & 2 & 0.02318 \\
+\textbf{ca} & 36.4 & 3 & 6.159e-08 \\
+\textbf{thal} & 13.53 & 2 & 0.001152 \\
+\end{longtable}
+
+Todas variáveis contribuem significativamente para o modelo.
+
+\subsection{Analisando os coeficientes do modelo
+reduzido}\label{analisando-os-coeficientes-do-modelo-reduzido}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(modelo\_reduzido\_)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = condition ~ sex + cp + oldpeak + slope + ca + thal, 
+##     family = "binomial", data = treino)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)  -5.9413     1.0866  -5.468 4.55e-08 ***
+## sex1          1.5013     0.5701   2.633 0.008457 ** 
+## cp1           1.9084     0.8790   2.171 0.029920 *  
+## cp2           0.1321     0.8094   0.163 0.870380    
+## cp3           2.8874     0.7625   3.787 0.000153 ***
+## oldpeak       0.7464     0.2675   2.790 0.005265 ** 
+## slope1        1.4200     0.5586   2.542 0.011027 *  
+## slope2        0.3778     0.9772   0.387 0.699022    
+## ca1           2.4781     0.5834   4.248 2.16e-05 ***
+## ca2           2.7872     0.7884   3.535 0.000407 ***
+## ca3           3.0723     1.1399   2.695 0.007031 ** 
+## thal1        -0.4301     0.9152  -0.470 0.638360    
+## thal2         1.6062     0.4905   3.275 0.001058 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 328.58  on 237  degrees of freedom
+## Residual deviance: 145.99  on 225  degrees of freedom
+## AIC: 171.99
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+O AIC do modelo reduzido (171.99) foi menor que o do modelo completo, e
+a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com
+menos variáveis conseguiu explicar tão bem os dados quanto o completo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcula os Odds Ratios e os Intervalos de Confiança}
+\NormalTok{intervalos }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\FunctionTok{confint}\NormalTok{(modelo\_reduzido\_))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Waiting for profiling to be done...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ors }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\FunctionTok{coef}\NormalTok{(modelo\_reduzido\_))}
+
+\CommentTok{\# Cria o data frame e calcula a Amplitude}
+\NormalTok{tabela\_coef }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{OR =}\NormalTok{ ors,}
+  \StringTok{"2.5"} \OtherTok{=}\NormalTok{ intervalos[,}\DecValTok{1}\NormalTok{],}
+  \StringTok{"97.5"} \OtherTok{=}\NormalTok{ intervalos[,}\DecValTok{2}\NormalTok{],}
+  \AttributeTok{Amplitude =}\NormalTok{ intervalos[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ intervalos[,}\DecValTok{1}\NormalTok{] }\CommentTok{\# Diferença absoluta}
+\NormalTok{)}
+
+\FunctionTok{pander}\NormalTok{(tabela\_coef, }
+       \AttributeTok{caption =} \StringTok{"Odds Ratios, Intervalos de Confiança e Amplitude"}\NormalTok{,}
+       \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}@{}}
+\caption{Odds Ratios, Intervalos de Confiança e
+Amplitude}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+OR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X2.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X97.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Amplitude
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+OR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X2.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X97.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Amplitude
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{(Intercept)} & 0.002629 & 0.0002555 & 0.01868 & 0.01842 \\
+\textbf{sex1} & 4.487 & 1.524 & 14.54 & 13.02 \\
+\textbf{cp1} & 6.742 & 1.257 & 40.86 & 39.6 \\
+\textbf{cp2} & 1.141 & 0.2326 & 5.755 & 5.522 \\
+\textbf{cp3} & 17.95 & 4.36 & 89.08 & 84.72 \\
+\textbf{oldpeak} & 2.109 & 1.278 & 3.68 & 2.401 \\
+\textbf{slope1} & 4.137 & 1.427 & 12.99 & 11.56 \\
+\textbf{slope2} & 1.459 & 0.2034 & 9.701 & 9.497 \\
+\textbf{ca1} & 11.92 & 3.986 & 39.93 & 35.94 \\
+\textbf{ca2} & 16.24 & 3.77 & 83.96 & 80.19 \\
+\textbf{ca3} & 21.59 & 2.872 & 261.3 & 258.5 \\
+\textbf{thal1} & 0.6504 & 0.1084 & 4.116 & 4.008 \\
+\textbf{thal2} & 4.984 & 1.94 & 13.45 & 11.51 \\
+\end{longtable}
+
+É possível observar que alguns coeficientes estimados são muito incertos
+(o modelo não conseguiu definir se a associação entre a respectiva
+variável e o target era positiva ou negativa);
+
+Essas variáveis foram : cp2, slope2 e thal1
+
+Outros coeficientes tinham IC com amplitude grande demais, como foi o
+caso de cp3, ca3, ca2
+
+Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes
+
+Uma possível motivação para isso é que essas variáveis categóricas
+possuem algumas classes subrepresentadas no dataset, dificultando a
+estimação dos parâmetros.
+
+\subsection{Treinando modelo com agrupamento de classes
+subrepresentadas}\label{treinando-modelo-com-agrupamento-de-classes-subrepresentadas}
+
+\begin{itemize}
+\tightlist
+\item
+  cp :
+
+  \begin{itemize}
+  \tightlist
+  \item
+    com\_dor : \{0, 1, 2\}
+  \item
+    sem\_dor : \{3\}
+  \end{itemize}
+\item
+  slope :
+
+  \begin{itemize}
+  \tightlist
+  \item
+    asc : \{0\}
+  \item
+    not\_asc : \{1, 2\}
+  \end{itemize}
+\item
+  ca :
+
+  \begin{itemize}
+  \tightlist
+  \item
+    zero : \{0\}
+  \item
+    not\_zero : \{1, 2, 3\}
+  \end{itemize}
+\item
+  thal :
+
+  \begin{itemize}
+  \tightlist
+  \item
+    normal : \{0\}
+  \item
+    not\_normal : \{1, 2\}
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelo\_agrupado }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(condition }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex}\SpecialCharTok{+}\NormalTok{ cp }\SpecialCharTok{+}
+\NormalTok{                   oldpeak }\SpecialCharTok{+}\NormalTok{ slope }\SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{+}\NormalTok{ thal, }
+                 \AttributeTok{data =}\NormalTok{ treino\_agrupado, }
+                 \AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(modelo\_agrupado)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = condition ~ sex + cp + oldpeak + slope + ca + thal, 
+##     family = "binomial", data = treino_agrupado)
+## 
+## Coefficients:
+##                 Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)      -2.1741     0.5627  -3.864 0.000112 ***
+## sex1              1.1387     0.4984   2.285 0.022342 *  
+## cp_sem dor        2.1247     0.4299   4.943 7.70e-07 ***
+## oldpeak           0.5708     0.2290   2.493 0.012669 *  
+## slope_not_asc     0.9416     0.4819   1.954 0.050691 .  
+## ca_zero          -2.3326     0.4465  -5.224 1.75e-07 ***
+## thal_not_normal   1.2461     0.4543   2.743 0.006092 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 328.58  on 237  degrees of freedom
+## Residual deviance: 157.70  on 231  degrees of freedom
+## AIC: 171.7
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcula os Odds Ratios e os Intervalos de Confiança}
+\NormalTok{intervalos }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\FunctionTok{confint}\NormalTok{(modelo\_agrupado))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Waiting for profiling to be done...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ors }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(}\FunctionTok{coef}\NormalTok{(modelo\_agrupado))}
+
+\CommentTok{\# Cria o data frame e calcula a Amplitude}
+\NormalTok{tabela\_coef }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{OR =}\NormalTok{ ors,}
+  \StringTok{"2.5"} \OtherTok{=}\NormalTok{ intervalos[,}\DecValTok{1}\NormalTok{],}
+  \StringTok{"97.5"} \OtherTok{=}\NormalTok{ intervalos[,}\DecValTok{2}\NormalTok{],}
+  \AttributeTok{Amplitude =}\NormalTok{ intervalos[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ intervalos[,}\DecValTok{1}\NormalTok{] }\CommentTok{\# Diferença absoluta}
+\NormalTok{)}
+
+\FunctionTok{pander}\NormalTok{(tabela\_coef, }
+       \AttributeTok{caption =} \StringTok{"Odds Ratios, Intervalos de Confiança e Amplitude"}\NormalTok{,}
+       \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3056}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1667}}@{}}
+\caption{Odds Ratios, Intervalos de Confiança e
+Amplitude}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+OR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X2.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X97.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Amplitude
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+~
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+OR
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X2.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+X97.5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Amplitude
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{(Intercept)} & 0.1137 & 0.0346 & 0.3199 & 0.2853 \\
+\textbf{sex1} & 3.123 & 1.196 & 8.564 & 7.368 \\
+\textbf{cp\_sem dor} & 8.37 & 3.71 & 20.25 & 16.54 \\
+\textbf{oldpeak} & 1.77 & 1.15 & 2.836 & 1.686 \\
+\textbf{slope\_not\_asc} & 2.564 & 1.004 & 6.721 & 5.717 \\
+\textbf{ca\_zero} & 0.09704 & 0.03845 & 0.2243 & 0.1859 \\
+\textbf{thal\_not\_normal} & 3.477 & 1.439 & 8.636 & 7.198 \\
+\end{longtable}
+
+Aqui, é possível observar que os parâmetros estão mais estáveis e os
+odds ratios estão mais de acordo com os insights obtidos na EDA;
+
+\section{Criando árvore de decisão de acordo com as variáveis usadas no
+modelo logístico
+reduzido}\label{criando-uxe1rvore-de-decisuxe3o-de-acordo-com-as-variuxe1veis-usadas-no-modelo-loguxedstico-reduzido}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Árvore de Decisão nos Dados Originais}
+\NormalTok{arvore\_original }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(condition }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ cp }\SpecialCharTok{+}\NormalTok{ oldpeak }\SpecialCharTok{+}\NormalTok{ slope }\SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{+}\NormalTok{ thal, }
+                         \AttributeTok{data =}\NormalTok{ treino, }
+                         \AttributeTok{method =} \StringTok{"class"}\NormalTok{)}
+
+\CommentTok{\# Árvore de Decisão nos Dados com classes agrupadas }
+\NormalTok{arvore\_limpa }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(condition }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ cp }\SpecialCharTok{+}\NormalTok{ oldpeak }\SpecialCharTok{+}\NormalTok{ slope }\SpecialCharTok{+}\NormalTok{ ca }\SpecialCharTok{+}\NormalTok{ thal, }
+                      \AttributeTok{data =}\NormalTok{ treino\_limpo, }
+                      \AttributeTok{method =} \StringTok{"class"}\NormalTok{)}
+
+\CommentTok{\# Plotando das árvores}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+
+\FunctionTok{rpart.plot}\NormalTok{(arvore\_original, }\AttributeTok{main =} \StringTok{"Árvore: Dados Originais"}\NormalTok{, }
+           \AttributeTok{type =} \DecValTok{4}\NormalTok{, }\AttributeTok{extra =} \DecValTok{104}\NormalTok{, }\AttributeTok{under =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{faclen =} \DecValTok{0}\NormalTok{)}
+
+\FunctionTok{rpart.plot}\NormalTok{(arvore\_limpa, }\AttributeTok{main =} \StringTok{"Árvore: Dados com classes agrupadas"}\NormalTok{, }
+           \AttributeTok{type =} \DecValTok{4}\NormalTok{, }\AttributeTok{extra =} \DecValTok{104}\NormalTok{, }\AttributeTok{under =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{faclen =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{relatorio_files/figure-latex/unnamed-chunk-11-1.pdf}}
+
+As duas árvores geradas são iguais, isso mostra que o agrupamento das
+classes subrepresentadas faz sentido;
+
+\subsection{Verificando o desempenho do modelo no conjunto de teste (via
+boostrap)}\label{verificando-o-desempenho-do-modelo-no-conjunto-de-teste-via-boostrap}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# BOOTSTRAP}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{n\_boot }\OtherTok{\textless{}{-}} \DecValTok{1000}
+
+\CommentTok{\# Bootstrap para os 3 modelos principais}
+\NormalTok{boot\_reduzido }\OtherTok{\textless{}{-}} \FunctionTok{boot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ teste, }\AttributeTok{statistic =}\NormalTok{ calc\_boot\_metrics, }
+                      \AttributeTok{R =}\NormalTok{ n\_boot, }\AttributeTok{modelo =}\NormalTok{ modelo\_reduzido\_, }\AttributeTok{tipo\_modelo =} \StringTok{"glm"}\NormalTok{)}
+
+\NormalTok{boot\_agrupado }\OtherTok{\textless{}{-}} \FunctionTok{boot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ teste\_agrupado, }\AttributeTok{statistic =}\NormalTok{ calc\_boot\_metrics, }
+                      \AttributeTok{R =}\NormalTok{ n\_boot, }\AttributeTok{modelo =}\NormalTok{ modelo\_agrupado, }\AttributeTok{tipo\_modelo =} \StringTok{"glm"}\NormalTok{)}
+
+\NormalTok{boot\_arvore   }\OtherTok{\textless{}{-}} \FunctionTok{boot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ teste\_agrupado, }\AttributeTok{statistic =}\NormalTok{ calc\_boot\_metrics, }
+                      \AttributeTok{R =}\NormalTok{ n\_boot, }\AttributeTok{modelo =}\NormalTok{ arvore\_limpa, }\AttributeTok{tipo\_modelo =} \StringTok{"tree"}\NormalTok{)}
+
+
+\NormalTok{tabela\_bootstrap }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+  \FunctionTok{summarize\_boot}\NormalTok{(boot\_reduzido, }\StringTok{"Logística Reduzida"}\NormalTok{),}
+  \FunctionTok{summarize\_boot}\NormalTok{(boot\_agrupado, }\StringTok{"Logística Agrupada"}\NormalTok{),}
+  \FunctionTok{summarize\_boot}\NormalTok{(boot\_arvore, }\StringTok{"Árvore de Decisão"}\NormalTok{)}
+\NormalTok{)}
+
+
+\NormalTok{tabela\_ordenada }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_bootstrap }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(Metrica, }\FunctionTok{desc}\NormalTok{(Modelo))}
+
+\FunctionTok{pander}\NormalTok{(tabela\_ordenada, }
+       \AttributeTok{caption =} \StringTok{"Métricas de Performance Ordenadas (Média e IC de 95\%)"}\NormalTok{,}
+       \AttributeTok{split.table =} \ConstantTok{Inf}\NormalTok{, }\CommentTok{\# Evita que a tabela quebre em colunas}
+       \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2917}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1528}}@{}}
+\caption{Métricas de Performance Ordenadas (Média e IC de
+95\%)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Modelo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Metrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Media
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+IC\_Lower
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+IC\_Upper
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Modelo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Metrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Media
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+IC\_Lower
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+IC\_Upper
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Árvore de Decisão & AUC & 0.8279 & 0.7137 & 0.9306 \\
+Logística Reduzida & AUC & 0.8683 & 0.7564 & 0.9628 \\
+Logística Agrupada & AUC & 0.8836 & 0.775 & 0.9674 \\
+Árvore de Decisão & Acurácia & 0.8309 & 0.7288 & 0.9153 \\
+Logística Reduzida & Acurácia & 0.8112 & 0.7119 & 0.8983 \\
+Logística Agrupada & Acurácia & 0.7972 & 0.6949 & 0.8983 \\
+Árvore de Decisão & PR-AUC & 0.3507 & 0.2024 & 0.5061 \\
+Logística Reduzida & PR-AUC & 0.8313 & 0.7126 & 0.9267 \\
+Logística Agrupada & PR-AUC & 0.8415 & 0.7232 & 0.9297 \\
+Árvore de Decisão & Precisão & 0.8234 & 0.6875 & 0.9429 \\
+Logística Reduzida & Precisão & 0.8137 & 0.6748 & 0.9355 \\
+Logística Agrupada & Precisão & 0.8136 & 0.6762 & 0.9376 \\
+Árvore de Decisão & Recall & 0.8756 & 0.75 & 0.9722 \\
+Logística Reduzida & Recall & 0.8432 & 0.7097 & 0.9584 \\
+Logística Agrupada & Recall & 0.8131 & 0.6667 & 0.9375 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(tabela\_ordenada, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Modelo, }\AttributeTok{y =}\NormalTok{ Media, }\AttributeTok{color =}\NormalTok{ Modelo)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ IC\_Lower, }\AttributeTok{ymax =}\NormalTok{ IC\_Upper), }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{linewidth =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Metrica, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set1"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Comparação de Modelos via Bootstrap (n=59 no teste)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Pontos representam a média e barras representam o IC de 95\%"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Valor da Métrica"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{""}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{axis.text.x =} \FunctionTok{element\_blank}\NormalTok{(), }\CommentTok{\# Remove o texto do eixo X para não sobrepor}
+    \AttributeTok{strip.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{size =} \DecValTok{10}\NormalTok{), }\CommentTok{\# Estiliza o título dos quadros}
+    \AttributeTok{legend.position =} \StringTok{"bottom"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{relatorio_files/figure-latex/unnamed-chunk-13-1.pdf}}
+
+Esse gráfico mostra que o desempenho dos modelos parece ser equivalente
+entre os modelos, entretando, no PR-AUC, é possível observar que a
+árvore de decisão teve um valor muito inferior aos outros, ou seja, ela
+é um modelo muito sensível a pequenas mudanças.
+
+\subsubsection{Teste de hipótese de diferença de médias entre o modelo
+logístico nos dados agrupados e a árvore de
+decisão}\label{teste-de-hipuxf3tese-de-diferenuxe7a-de-muxe9dias-entre-o-modelo-loguxedstico-nos-dados-agrupados-e-a-uxe1rvore-de-decisuxe3o}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{metricas\_nomes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Acurácia"}\NormalTok{, }\StringTok{"Precisão"}\NormalTok{, }\StringTok{"Recall"}\NormalTok{, }\StringTok{"AUC"}\NormalTok{, }\StringTok{"PR{-}AUC"}\NormalTok{)}
+\NormalTok{resultados\_testes }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
+
+\CommentTok{\# {-}{-}{-} 2. LOOP PARA CÁLCULO DE P{-}VALOR POR MÉTRICA {-}{-}{-}}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{) \{}
+\NormalTok{  dist\_agrupada }\OtherTok{\textless{}{-}}\NormalTok{ boot\_agrupado}\SpecialCharTok{$}\NormalTok{t[, i]}
+\NormalTok{  dist\_arvore   }\OtherTok{\textless{}{-}}\NormalTok{ boot\_arvore}\SpecialCharTok{$}\NormalTok{t[, i]}
+  
+  \CommentTok{\# Diferença das distribuições (Agrupada {-} Árvore)}
+\NormalTok{  diff\_dist }\OtherTok{\textless{}{-}}\NormalTok{ dist\_agrupada }\SpecialCharTok{{-}}\NormalTok{ dist\_arvore}
+  
+  \CommentTok{\# P{-}valor: proporção de vezes que a árvore empatou ou venceu}
+\NormalTok{  p\_val }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(diff\_dist }\SpecialCharTok{\textless{}=} \DecValTok{0}\NormalTok{)}
+  
+  \CommentTok{\# Armazenando resultados}
+\NormalTok{  resultados\_testes }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(resultados\_testes, }\FunctionTok{data.frame}\NormalTok{(}
+\NormalTok{    Métrica }\OtherTok{=}\NormalTok{ metricas\_nomes[i],}
+\NormalTok{    Diferença\_Média }\OtherTok{=} \FunctionTok{mean}\NormalTok{(diff\_dist),}
+    \AttributeTok{P\_Valor =}\NormalTok{ p\_val,}
+    \AttributeTok{Significativo\_05 =} \FunctionTok{ifelse}\NormalTok{(p\_val }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"Sim"}\NormalTok{, }\StringTok{"Não"}\NormalTok{)}
+\NormalTok{  ))}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-} 3. EXIBIÇÃO DA TABELA {-}{-}{-}}
+\FunctionTok{pander}\NormalTok{(resultados\_testes, }
+       \AttributeTok{caption =} \StringTok{"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"}\NormalTok{,}
+       \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2639}}@{}}
+\caption{Teste de Hipótese via Bootstrap: Logística Agrupada vs.~Árvore
+de Decisão}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Diferença\_Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+P\_Valor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Significativo\_05
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Diferença\_Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+P\_Valor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Significativo\_05
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Acurácia & -0.03378 & 0.717 & Não \\
+Precisão & -0.009789 & 0.54 & Não \\
+Recall & -0.06255 & 0.759 & Não \\
+AUC & 0.0557 & 0.22 & Não \\
+PR-AUC & 0.4908 & 0 & Sim \\
+\end{longtable}
+
+\subsubsection{Teste de hipótese de diferença de médias entre o modelo
+logístico nos dados agrupados e nos dados
+originais}\label{teste-de-hipuxf3tese-de-diferenuxe7a-de-muxe9dias-entre-o-modelo-loguxedstico-nos-dados-agrupados-e-nos-dados-originais}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{metricas\_nomes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Acurácia"}\NormalTok{, }\StringTok{"Precisão"}\NormalTok{, }\StringTok{"Recall"}\NormalTok{, }\StringTok{"AUC"}\NormalTok{, }\StringTok{"PR{-}AUC"}\NormalTok{)}
+\NormalTok{resultados\_testes }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{()}
+
+\CommentTok{\# {-}{-}{-} 2. LOOP PARA CÁLCULO DE P{-}VALOR POR MÉTRICA {-}{-}{-}}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{) \{}
+\NormalTok{  dist\_agrupada }\OtherTok{\textless{}{-}}\NormalTok{ boot\_agrupado}\SpecialCharTok{$}\NormalTok{t[, i]}
+\NormalTok{  dist\_reduzido   }\OtherTok{\textless{}{-}}\NormalTok{ boot\_reduzido}\SpecialCharTok{$}\NormalTok{t[, i]}
+  
+  \CommentTok{\# Diferença das distribuições (Agrupada {-} Árvore)}
+\NormalTok{  diff\_dist }\OtherTok{\textless{}{-}}\NormalTok{ dist\_agrupada }\SpecialCharTok{{-}}\NormalTok{ dist\_reduzido}
+  
+  \CommentTok{\# P{-}valor: proporção de vezes que a árvore empatou ou venceu}
+\NormalTok{  p\_val }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(diff\_dist }\SpecialCharTok{\textless{}=} \DecValTok{0}\NormalTok{)}
+  
+  \CommentTok{\# Armazenando resultados}
+\NormalTok{  resultados\_testes }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(resultados\_testes, }\FunctionTok{data.frame}\NormalTok{(}
+\NormalTok{    Métrica }\OtherTok{=}\NormalTok{ metricas\_nomes[i],}
+\NormalTok{    Diferença\_Média }\OtherTok{=} \FunctionTok{mean}\NormalTok{(diff\_dist),}
+    \AttributeTok{P\_Valor =}\NormalTok{ p\_val,}
+    \AttributeTok{Significativo\_05 =} \FunctionTok{ifelse}\NormalTok{(p\_val }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"Sim"}\NormalTok{, }\StringTok{"Não"}\NormalTok{)}
+\NormalTok{  ))}
+\NormalTok{\}}
+
+\CommentTok{\# {-}{-}{-} 3. EXIBIÇÃO DA TABELA {-}{-}{-}}
+\FunctionTok{pander}\NormalTok{(resultados\_testes, }
+       \AttributeTok{caption =} \StringTok{"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"}\NormalTok{,}
+       \AttributeTok{digits =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1528}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1389}}
+  >{\centering\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2639}}@{}}
+\caption{Teste de Hipótese via Bootstrap: Logística Agrupada vs.~Árvore
+de Decisão}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Diferença\_Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+P\_Valor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Significativo\_05
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Métrica
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Diferença\_Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+P\_Valor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Significativo\_05
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Acurácia & -0.014 & 0.615 & Não \\
+Precisão & -0.0001247 & 0.508 & Não \\
+Recall & -0.03017 & 0.638 & Não \\
+AUC & 0.01536 & 0.417 & Não \\
+PR-AUC & 0.01019 & 0.435 & Não \\
+\end{longtable}
+
+\section{Conclusão}\label{conclusuxe3o}
+
+Como não há diferenças significativas entre o desempenho do modelo
+logístico com e sem os dados agrupados e o modelo com classes agrupadas
+teve parâmetros mais ``comportados'', o escolheremos como o melhor
+modelo, nessa análise.
+
+\end{document}
