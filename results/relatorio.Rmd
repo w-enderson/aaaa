@@ -181,7 +181,6 @@ Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes
 
 Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.
 
-
 ## Treinando modelo com agrupamento de classes subrepresentadas
 
 * cp : 
@@ -232,6 +231,15 @@ pander(tabela_coef,
 
 Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os insights obtidos na EDA;
 
+## Verificando a qualidade de ajuste do modelo
+
+```{r}
+performance_hosmer(modelo_agrupado)
+```
+
+Como a hipótese nula não foi rejeitada, não há evidências nos dados que indiquem que o ajuste não foi bom.
+
+
 
 # Criando árvore de decisão de acordo com as variáveis usadas no modelo logístico reduzido
 
@@ -264,6 +272,9 @@ As duas árvores geradas são iguais, isso mostra que o agrupamento das classes 
 
 
 
+
+
+<!-- 
 ## Verificando o desempenho do modelo no conjunto de teste (via boostrap)
 ```{r}
 # BOOTSTRAP
@@ -390,4 +401,6 @@ pander(resultados_testes,
 # Conclusão
 
 
-Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais "comportados", o escolheremos como o melhor modelo, nessa análise.
+Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais "comportados", o escolheremos como o melhor modelo, nessa análise. -->
+
+

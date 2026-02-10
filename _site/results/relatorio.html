@@ -469,10 +469,103 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <p>Todas variáveis contribuem significativamente para o modelo.</p>
 </section>
+<section id="analisando-a-linearidade-dosn-logits-em-relação-às-variáveis-contínuas-descartadas-pelo-teste-de-razão-de-verossimilhanças" class="level2">
+<h2 class="anchored" data-anchor-id="analisando-a-linearidade-dosn-logits-em-relação-às-variáveis-contínuas-descartadas-pelo-teste-de-razão-de-verossimilhanças">Analisando a linearidade dosn logits em relação às variáveis contínuas descartadas pelo teste de razão de verossimilhanças</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_logit_linearity</span>(modelo1_, <span class="st">"age"</span>, treino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_logit_linearity</span>(modelo1_, <span class="st">"thalach"</span>, treino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_logit_linearity</span>(modelo1_, <span class="st">"trestbps"</span>, treino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_logit_linearity</span>(modelo1_, <span class="st">"chol"</span>, treino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>É possível observar que o logit varia drasticamente para o mesmo valor das variáveis age, trestbps e chol, indicando que elas não explicam bem a variável alvo.</p>
+<p>Entretanto, thalac aparentemente possui uma padrão linear com o logit, mas esse padrão é deformado por causa da observação 96 .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modelo excluindo o paciente 96</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usamos o row.names para garantir que estamos tirando o ponto certo identificado no gráfico</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>treino_off <span class="ot">&lt;-</span> treino[<span class="fu">row.names</span>(treino) <span class="sc">!=</span> <span class="st">"9modelo_reduzido_6"</span>, ]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>modelo_off <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span> thalach <span class="sc">+</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> treino_off, <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>coef_on <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo1_)[<span class="st">"thalach"</span>]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>coef_off <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo_off)[<span class="st">"thalach"</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>variacao <span class="ot">&lt;-</span> ((coef_off <span class="sc">-</span> coef_on) <span class="sc">/</span> coef_on) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Coeficiente ON:"</span>, coef_on, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coeficiente ON: -0.01151674 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Coeficiente OFF:"</span>, coef_off, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coeficiente OFF: -0.007375631 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Variação Percentual:"</span>, variacao, <span class="st">"%</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Variação Percentual: -35.95731 %</code></pre>
+</div>
+</div>
+</section>
 <section id="analisando-os-coeficientes-do-modelo-reduzido" class="level2">
 <h2 class="anchored" data-anchor-id="analisando-os-coeficientes-do-modelo-reduzido">Analisando os coeficientes do modelo reduzido</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_reduzido_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_reduzido_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -508,24 +601,24 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <p>O AIC do modelo reduzido (171.99) foi menor que o do modelo completo, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo com menos variáveis conseguiu explicar tão bem os dados quanto o completo.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_reduzido_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_reduzido_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Waiting for profiling to be done...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_reduzido_))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">OR =</span> ors,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">1</span>],</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"97.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">2</span>],</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Amplitude =</span> intervalos[,<span class="dv">2</span>] <span class="sc">-</span> intervalos[,<span class="dv">1</span>] <span class="co"># Diferença absoluta</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_reduzido_))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">OR =</span> ors,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">1</span>],</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"97.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">2</span>],</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Amplitude =</span> intervalos[,<span class="dv">2</span>] <span class="sc">-</span> intervalos[,<span class="dv">1</span>] <span class="co"># Diferença absoluta</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Odds Ratios, Intervalos de Confiança e Amplitude</caption>
@@ -646,6 +739,23 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <p>Outros coeficientes tinham IC com amplitude grande demais, como foi o caso de cp3, ca3, ca2</p>
 <p>Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes</p>
 <p>Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.</p>
+<section id="verificando-se-há-linearidade-no-logito-para-a-varti-oldpeak" class="level3">
+<h3 class="anchored" data-anchor-id="verificando-se-há-linearidade-no-logito-para-a-varti-oldpeak">Verificando se há linearidade no logito para a varti oldpeak</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_logit_linearity</span>(modelo_reduzido_, <span class="st">"oldpeak"</span>, treino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'
+`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="treinando-modelo-com-agrupamento-de-classes-subrepresentadas" class="level2">
 <h2 class="anchored" data-anchor-id="treinando-modelo-com-agrupamento-de-classes-subrepresentadas">Treinando modelo com agrupamento de classes subrepresentadas</h2>
@@ -672,13 +782,13 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelo_agrupado <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> treino_agrupado, </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>modelo_agrupado <span class="ot">&lt;-</span> <span class="fu">glm</span>(condition <span class="sc">~</span> sex<span class="sc">+</span> cp <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                   oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> treino_agrupado, </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_agrupado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_agrupado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -707,24 +817,24 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_agrupado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcula os Odds Ratios e os Intervalos de Confiança</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>intervalos <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(modelo_agrupado))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Waiting for profiling to be done...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_agrupado))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">OR =</span> ors,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">1</span>],</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"97.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">2</span>],</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Amplitude =</span> intervalos[,<span class="dv">2</span>] <span class="sc">-</span> intervalos[,<span class="dv">1</span>] <span class="co"># Diferença absoluta</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ors <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">coef</span>(modelo_agrupado))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o data frame e calcula a Amplitude</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>tabela_coef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">OR =</span> ors,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"2.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">1</span>],</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"97.5"</span> <span class="ot">=</span> intervalos[,<span class="dv">2</span>],</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Amplitude =</span> intervalos[,<span class="dv">2</span>] <span class="sc">-</span> intervalos[,<span class="dv">1</span>] <span class="co"># Diferença absoluta</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_coef, </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Odds Ratios, Intervalos de Confiança e Amplitude"</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Odds Ratios, Intervalos de Confiança e Amplitude</caption>
@@ -804,392 +914,266 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <section id="criando-árvore-de-decisão-de-acordo-com-as-variáveis-usadas-no-modelo-logístico-reduzido" class="level1">
 <h1>Criando árvore de decisão de acordo com as variáveis usadas no modelo logístico reduzido</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados Originais</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>arvore_original <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> treino, </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"class"</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados com classes agrupadas </span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>arvore_limpa <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> treino_limpo, </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"class"</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotando das árvores</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_original, <span class="at">main =</span> <span class="st">"Árvore: Dados Originais"</span>, </span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_limpa, <span class="at">main =</span> <span class="st">"Árvore: Dados com classes agrupadas"</span>, </span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados Originais</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>arvore_original <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> treino, </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">"class"</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Árvore de Decisão nos Dados com classes agrupadas </span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>arvore_limpa <span class="ot">&lt;-</span> <span class="fu">rpart</span>(condition <span class="sc">~</span> sex <span class="sc">+</span> cp <span class="sc">+</span> oldpeak <span class="sc">+</span> slope <span class="sc">+</span> ca <span class="sc">+</span> thal, </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> treino_limpo, </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"class"</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotando das árvores</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_original, <span class="at">main =</span> <span class="st">"Árvore: Dados Originais"</span>, </span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(arvore_limpa, <span class="at">main =</span> <span class="st">"Árvore: Dados com classes agrupadas"</span>, </span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">type =</span> <span class="dv">4</span>, <span class="at">extra =</span> <span class="dv">104</span>, <span class="at">under =</span> <span class="cn">TRUE</span>, <span class="at">faclen =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>As duas árvores geradas são iguais, isso mostra que o agrupamento das classes subrepresentadas faz sentido;</p>
-<section id="verificando-o-desempenho-do-modelo-no-conjunto-de-teste-via-boostrap" class="level2">
-<h2 class="anchored" data-anchor-id="verificando-o-desempenho-do-modelo-no-conjunto-de-teste-via-boostrap">Verificando o desempenho do modelo no conjunto de teste (via boostrap)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BOOTSTRAP</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>n_boot <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap para os 3 modelos principais</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>boot_reduzido <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste, <span class="at">statistic =</span> calc_boot_metrics, </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> modelo_reduzido_, <span class="at">tipo_modelo =</span> <span class="st">"glm"</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>boot_agrupado <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste_agrupado, <span class="at">statistic =</span> calc_boot_metrics, </span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> modelo_agrupado, <span class="at">tipo_modelo =</span> <span class="st">"glm"</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>boot_arvore   <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> teste_agrupado, <span class="at">statistic =</span> calc_boot_metrics, </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">R =</span> n_boot, <span class="at">modelo =</span> arvore_limpa, <span class="at">tipo_modelo =</span> <span class="st">"tree"</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>tabela_bootstrap <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_reduzido, <span class="st">"Logística Reduzida"</span>),</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_agrupado, <span class="st">"Logística Agrupada"</span>),</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize_boot</span>(boot_arvore, <span class="st">"Árvore de Decisão"</span>)</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>tabela_ordenada <span class="ot">&lt;-</span> tabela_bootstrap <span class="sc">%&gt;%</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Metrica, <span class="fu">desc</span>(Modelo))</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(tabela_ordenada, </span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Métricas de Performance Ordenadas (Média e IC de 95%)"</span>,</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">split.table =</span> <span class="cn">Inf</span>, <span class="co"># Evita que a tabela quebre em colunas</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Métricas de Performance Ordenadas (Média e IC de 95%)</caption>
-<colgroup>
-<col style="width: 29%">
-<col style="width: 15%">
-<col style="width: 12%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Modelo</th>
-<th style="text-align: center;">Metrica</th>
-<th style="text-align: center;">Media</th>
-<th style="text-align: center;">IC_Lower</th>
-<th style="text-align: center;">IC_Upper</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Árvore de Decisão</td>
-<td style="text-align: center;">AUC</td>
-<td style="text-align: center;">0.8279</td>
-<td style="text-align: center;">0.7137</td>
-<td style="text-align: center;">0.9306</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Reduzida</td>
-<td style="text-align: center;">AUC</td>
-<td style="text-align: center;">0.8683</td>
-<td style="text-align: center;">0.7564</td>
-<td style="text-align: center;">0.9628</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Logística Agrupada</td>
-<td style="text-align: center;">AUC</td>
-<td style="text-align: center;">0.8836</td>
-<td style="text-align: center;">0.775</td>
-<td style="text-align: center;">0.9674</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Árvore de Decisão</td>
-<td style="text-align: center;">Acurácia</td>
-<td style="text-align: center;">0.8309</td>
-<td style="text-align: center;">0.7288</td>
-<td style="text-align: center;">0.9153</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Logística Reduzida</td>
-<td style="text-align: center;">Acurácia</td>
-<td style="text-align: center;">0.8112</td>
-<td style="text-align: center;">0.7119</td>
-<td style="text-align: center;">0.8983</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Agrupada</td>
-<td style="text-align: center;">Acurácia</td>
-<td style="text-align: center;">0.7972</td>
-<td style="text-align: center;">0.6949</td>
-<td style="text-align: center;">0.8983</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Árvore de Decisão</td>
-<td style="text-align: center;">PR-AUC</td>
-<td style="text-align: center;">0.3507</td>
-<td style="text-align: center;">0.2024</td>
-<td style="text-align: center;">0.5061</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Reduzida</td>
-<td style="text-align: center;">PR-AUC</td>
-<td style="text-align: center;">0.8313</td>
-<td style="text-align: center;">0.7126</td>
-<td style="text-align: center;">0.9267</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Logística Agrupada</td>
-<td style="text-align: center;">PR-AUC</td>
-<td style="text-align: center;">0.8415</td>
-<td style="text-align: center;">0.7232</td>
-<td style="text-align: center;">0.9297</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Árvore de Decisão</td>
-<td style="text-align: center;">Precisão</td>
-<td style="text-align: center;">0.8234</td>
-<td style="text-align: center;">0.6875</td>
-<td style="text-align: center;">0.9429</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Logística Reduzida</td>
-<td style="text-align: center;">Precisão</td>
-<td style="text-align: center;">0.8137</td>
-<td style="text-align: center;">0.6748</td>
-<td style="text-align: center;">0.9355</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Agrupada</td>
-<td style="text-align: center;">Precisão</td>
-<td style="text-align: center;">0.8136</td>
-<td style="text-align: center;">0.6762</td>
-<td style="text-align: center;">0.9376</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Árvore de Decisão</td>
-<td style="text-align: center;">Recall</td>
-<td style="text-align: center;">0.8756</td>
-<td style="text-align: center;">0.75</td>
-<td style="text-align: center;">0.9722</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Logística Reduzida</td>
-<td style="text-align: center;">Recall</td>
-<td style="text-align: center;">0.8432</td>
-<td style="text-align: center;">0.7097</td>
-<td style="text-align: center;">0.9584</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Logística Agrupada</td>
-<td style="text-align: center;">Recall</td>
-<td style="text-align: center;">0.8131</td>
-<td style="text-align: center;">0.6667</td>
-<td style="text-align: center;">0.9375</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_ordenada, <span class="fu">aes</span>(<span class="at">x =</span> Modelo, <span class="at">y =</span> Media, <span class="at">color =</span> Modelo)) <span class="sc">+</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> IC_Lower, <span class="at">ymax =</span> IC_Upper), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Metrica, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Comparação de Modelos via Bootstrap (n=59 no teste)"</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Pontos representam a média e barras representam o IC de 95%"</span>,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Valor da Métrica"</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="co"># Remove o texto do eixo X para não sobrepor</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>), <span class="co"># Estiliza o título dos quadros</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="relatorio_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Esse gráfico mostra que o desempenho dos modelos parece ser equivalente entre os modelos, entretando, no PR-AUC, é possível observar que a árvore de decisão teve um valor muito inferior aos outros, ou seja, ela é um modelo muito sensível a pequenas mudanças.</p>
-<section id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-a-árvore-de-decisão" class="level3">
-<h3 class="anchored" data-anchor-id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-a-árvore-de-decisão">Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e a árvore de decisão</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>metricas_nomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Acurácia"</span>, <span class="st">"Precisão"</span>, <span class="st">"Recall"</span>, <span class="st">"AUC"</span>, <span class="st">"PR-AUC"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>resultados_testes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  dist_agrupada <span class="ot">&lt;-</span> boot_agrupado<span class="sc">$</span>t[, i]</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  dist_arvore   <span class="ot">&lt;-</span> boot_arvore<span class="sc">$</span>t[, i]</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Diferença das distribuições (Agrupada - Árvore)</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  diff_dist <span class="ot">&lt;-</span> dist_agrupada <span class="sc">-</span> dist_arvore</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># P-valor: proporção de vezes que a árvore empatou ou venceu</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(diff_dist <span class="sc">&lt;=</span> <span class="dv">0</span>)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Armazenando resultados</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  resultados_testes <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resultados_testes, <span class="fu">data.frame</span>(</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    Métrica <span class="ot">=</span> metricas_nomes[i],</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    Diferença_Média <span class="ot">=</span> <span class="fu">mean</span>(diff_dist),</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_Valor =</span> p_val,</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Significativo_05 =</span> <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">"Sim"</span>, <span class="st">"Não"</span>)</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. EXIBIÇÃO DA TABELA ---</span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(resultados_testes, </span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"</span>,</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Teste de Hipótese via Bootstrap: Logística Agrupada vs.&nbsp;Árvore de Decisão</caption>
-<colgroup>
-<col style="width: 15%">
-<col style="width: 25%">
-<col style="width: 13%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Métrica</th>
-<th style="text-align: center;">Diferença_Média</th>
-<th style="text-align: center;">P_Valor</th>
-<th style="text-align: center;">Significativo_05</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Acurácia</td>
-<td style="text-align: center;">-0.03378</td>
-<td style="text-align: center;">0.717</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Precisão</td>
-<td style="text-align: center;">-0.009789</td>
-<td style="text-align: center;">0.54</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Recall</td>
-<td style="text-align: center;">-0.06255</td>
-<td style="text-align: center;">0.759</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">AUC</td>
-<td style="text-align: center;">0.0557</td>
-<td style="text-align: center;">0.22</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">PR-AUC</td>
-<td style="text-align: center;">0.4908</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">Sim</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-nos-dados-originais" class="level3">
-<h3 class="anchored" data-anchor-id="teste-de-hipótese-de-diferença-de-médias-entre-o-modelo-logístico-nos-dados-agrupados-e-nos-dados-originais">Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e nos dados originais</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>metricas_nomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Acurácia"</span>, <span class="st">"Precisão"</span>, <span class="st">"Recall"</span>, <span class="st">"AUC"</span>, <span class="st">"PR-AUC"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>resultados_testes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  dist_agrupada <span class="ot">&lt;-</span> boot_agrupado<span class="sc">$</span>t[, i]</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  dist_reduzido   <span class="ot">&lt;-</span> boot_reduzido<span class="sc">$</span>t[, i]</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Diferença das distribuições (Agrupada - Árvore)</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  diff_dist <span class="ot">&lt;-</span> dist_agrupada <span class="sc">-</span> dist_reduzido</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># P-valor: proporção de vezes que a árvore empatou ou venceu</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  p_val <span class="ot">&lt;-</span> <span class="fu">mean</span>(diff_dist <span class="sc">&lt;=</span> <span class="dv">0</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Armazenando resultados</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  resultados_testes <span class="ot">&lt;-</span> <span class="fu">rbind</span>(resultados_testes, <span class="fu">data.frame</span>(</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    Métrica <span class="ot">=</span> metricas_nomes[i],</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    Diferença_Média <span class="ot">=</span> <span class="fu">mean</span>(diff_dist),</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_Valor =</span> p_val,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Significativo_05 =</span> <span class="fu">ifelse</span>(p_val <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">"Sim"</span>, <span class="st">"Não"</span>)</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. EXIBIÇÃO DA TABELA ---</span></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="fu">pander</span>(resultados_testes, </span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão"</span>,</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Teste de Hipótese via Bootstrap: Logística Agrupada vs.&nbsp;Árvore de Decisão</caption>
-<colgroup>
-<col style="width: 15%">
-<col style="width: 25%">
-<col style="width: 13%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Métrica</th>
-<th style="text-align: center;">Diferença_Média</th>
-<th style="text-align: center;">P_Valor</th>
-<th style="text-align: center;">Significativo_05</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Acurácia</td>
-<td style="text-align: center;">-0.014</td>
-<td style="text-align: center;">0.615</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Precisão</td>
-<td style="text-align: center;">-0.0001247</td>
-<td style="text-align: center;">0.508</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Recall</td>
-<td style="text-align: center;">-0.03017</td>
-<td style="text-align: center;">0.638</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">AUC</td>
-<td style="text-align: center;">0.01536</td>
-<td style="text-align: center;">0.417</td>
-<td style="text-align: center;">Não</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">PR-AUC</td>
-<td style="text-align: center;">0.01019</td>
-<td style="text-align: center;">0.435</td>
-<td style="text-align: center;">Não</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="conclusão" class="level1">
-<h1>Conclusão</h1>
-<p>Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais “comportados”, o escolheremos como o melhor modelo, nessa análise.</p>
+<!-- 
+## Verificando o desempenho do modelo no conjunto de teste (via boostrap)
+
+::: {.cell}
+
+```{.r .cell-code}
+# BOOTSTRAP
+set.seed(123)
+n_boot <- 1000
+
+# Bootstrap para os 3 modelos principais
+boot_reduzido <- boot(data = teste, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = modelo_reduzido_, tipo_modelo = "glm")
+
+boot_agrupado <- boot(data = teste_agrupado, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = modelo_agrupado, tipo_modelo = "glm")
+
+boot_arvore   <- boot(data = teste_agrupado, statistic = calc_boot_metrics, 
+                      R = n_boot, modelo = arvore_limpa, tipo_modelo = "tree")
+
+
+tabela_bootstrap <- rbind(
+  summarize_boot(boot_reduzido, "Logística Reduzida"),
+  summarize_boot(boot_agrupado, "Logística Agrupada"),
+  summarize_boot(boot_arvore, "Árvore de Decisão")
+)
+
+
+tabela_ordenada <- tabela_bootstrap %>%
+  arrange(Metrica, desc(Modelo))
+
+pander(tabela_ordenada, 
+       caption = "Métricas de Performance Ordenadas (Média e IC de 95%)",
+       split.table = Inf, # Evita que a tabela quebre em colunas
+       digits = 4)
+```
+
+::: {.cell-output-display}
+
+--------------------------------------------------------------
+       Modelo         Metrica    Media    IC_Lower   IC_Upper 
+-------------------- ---------- -------- ---------- ----------
+ Árvore de Decisão      AUC      0.8279    0.7137     0.9306  
+
+ Logística Reduzida     AUC      0.8683    0.7564     0.9628  
+
+ Logística Agrupada     AUC      0.8836    0.775      0.9674  
+
+ Árvore de Decisão    Acurácia   0.8309    0.7288     0.9153  
+
+ Logística Reduzida   Acurácia   0.8112    0.7119     0.8983  
+
+ Logística Agrupada   Acurácia   0.7972    0.6949     0.8983  
+
+ Árvore de Decisão     PR-AUC    0.3507    0.2024     0.5061  
+
+ Logística Reduzida    PR-AUC    0.8313    0.7126     0.9267  
+
+ Logística Agrupada    PR-AUC    0.8415    0.7232     0.9297  
+
+ Árvore de Decisão    Precisão   0.8234    0.6875     0.9429  
+
+ Logística Reduzida   Precisão   0.8137    0.6748     0.9355  
+
+ Logística Agrupada   Precisão   0.8136    0.6762     0.9376  
+
+ Árvore de Decisão     Recall    0.8756     0.75      0.9722  
+
+ Logística Reduzida    Recall    0.8432    0.7097     0.9584  
+
+ Logística Agrupada    Recall    0.8131    0.6667     0.9375  
+--------------------------------------------------------------
+
+Table: Métricas de Performance Ordenadas (Média e IC de 95%)
+
+
+:::
+:::
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
+ggplot(tabela_ordenada, aes(x = Modelo, y = Media, color = Modelo)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = IC_Lower, ymax = IC_Upper), width = 0.2, linewidth = 1) +
+  facet_wrap(~Metrica, scales = "free_y") +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal() +
+  labs(
+    title = "Comparação de Modelos via Bootstrap (n=59 no teste)",
+    subtitle = "Pontos representam a média e barras representam o IC de 95%",
+    y = "Valor da Métrica",
+    x = ""
+  ) +
+  theme(
+    axis.text.x = element_blank(), # Remove o texto do eixo X para não sobrepor
+    strip.text = element_text(face = "bold", size = 10), # Estiliza o título dos quadros
+    legend.position = "bottom"
+  )
+```
+
+::: {.cell-output-display}
+![](relatorio_files/figure-html/unnamed-chunk-20-1.png){width=672}
+:::
+:::
+
+
+Esse gráfico mostra que o desempenho dos modelos parece ser equivalente entre os modelos, entretando, no PR-AUC, é possível observar que a árvore de decisão teve um valor muito inferior aos outros, ou seja, ela é um modelo muito sensível a pequenas mudanças.
+
+
+### Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e a árvore de decisão
+
+
+::: {.cell}
+
+```{.r .cell-code}
+metricas_nomes <- c("Acurácia", "Precisão", "Recall", "AUC", "PR-AUC")
+resultados_testes <- data.frame()
+
+# --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---
+for (i in 1:5) {
+  dist_agrupada <- boot_agrupado$t[, i]
+  dist_arvore   <- boot_arvore$t[, i]
+  
+  # Diferença das distribuições (Agrupada - Árvore)
+  diff_dist <- dist_agrupada - dist_arvore
+  
+  # P-valor: proporção de vezes que a árvore empatou ou venceu
+  p_val <- mean(diff_dist <= 0)
+  
+  # Armazenando resultados
+  resultados_testes <- rbind(resultados_testes, data.frame(
+    Métrica = metricas_nomes[i],
+    Diferença_Média = mean(diff_dist),
+    P_Valor = p_val,
+    Significativo_05 = ifelse(p_val < 0.05, "Sim", "Não")
+  ))
+}
+
+# --- 3. EXIBIÇÃO DA TABELA ---
+pander(resultados_testes, 
+       caption = "Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão",
+       digits = 4)
+```
+
+::: {.cell-output-display}
+
+---------------------------------------------------------
+ Métrica    Diferença_Média   P_Valor   Significativo_05 
+---------- ----------------- --------- ------------------
+ Acurácia      -0.03378        0.717          Não        
+
+ Precisão      -0.009789       0.54           Não        
+
+  Recall       -0.06255        0.759          Não        
+
+   AUC          0.0557         0.22           Não        
+
+  PR-AUC        0.4908           0            Sim        
+---------------------------------------------------------
+
+Table: Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão
+
+
+:::
+:::
+
+
+### Teste de hipótese de diferença de médias entre o modelo logístico nos dados agrupados e nos dados originais
+
+::: {.cell}
+
+```{.r .cell-code}
+metricas_nomes <- c("Acurácia", "Precisão", "Recall", "AUC", "PR-AUC")
+resultados_testes <- data.frame()
+
+# --- 2. LOOP PARA CÁLCULO DE P-VALOR POR MÉTRICA ---
+for (i in 1:5) {
+  dist_agrupada <- boot_agrupado$t[, i]
+  dist_reduzido   <- boot_reduzido$t[, i]
+  
+  # Diferença das distribuições (Agrupada - Árvore)
+  diff_dist <- dist_agrupada - dist_reduzido
+  
+  # P-valor: proporção de vezes que a árvore empatou ou venceu
+  p_val <- mean(diff_dist <= 0)
+  
+  # Armazenando resultados
+  resultados_testes <- rbind(resultados_testes, data.frame(
+    Métrica = metricas_nomes[i],
+    Diferença_Média = mean(diff_dist),
+    P_Valor = p_val,
+    Significativo_05 = ifelse(p_val < 0.05, "Sim", "Não")
+  ))
+}
+
+# --- 3. EXIBIÇÃO DA TABELA ---
+pander(resultados_testes, 
+       caption = "Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão",
+       digits = 4)
+```
+
+::: {.cell-output-display}
+
+---------------------------------------------------------
+ Métrica    Diferença_Média   P_Valor   Significativo_05 
+---------- ----------------- --------- ------------------
+ Acurácia       -0.014         0.615          Não        
+
+ Precisão     -0.0001247       0.508          Não        
+
+  Recall       -0.03017        0.638          Não        
+
+   AUC          0.01536        0.417          Não        
+
+  PR-AUC        0.01019        0.435          Não        
+---------------------------------------------------------
+
+Table: Teste de Hipótese via Bootstrap: Logística Agrupada vs. Árvore de Decisão
+
+
+:::
+:::
+
+
+
+# Conclusão
+
+
+Como não há diferenças significativas entre o desempenho do modelo logístico com e sem os dados agrupados e o modelo com classes agrupadas teve parâmetros mais "comportados", o escolheremos como o melhor modelo, nessa análise. -->
 
 
 </section>
