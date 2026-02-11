@@ -1,0 +1,298 @@
+---
+title: "Análise Estatística de Fatores de Risco para Doença Coronária"
+author: "Wenderson Santos"
+output: 
+    html_document:
+        theme: flatly
+        toc: true
+        code_folding: show
+    pdf_document:
+        toc: true
+        highlight: tango
+        latex_engine: xelatex
+---
+
+
+```{r setup, include=FALSE}
+source(here::here("R", "imports.R"))
+source(here::here("R", "getData.R"))
+source(here::here("R", "getDataBin.R"))
+source(here::here("R", "modelPrep.R"))
+source(here::here("R", "functions.R"))
+
+```
+
+
+# Introdução
+O dataset provém de um estudo que analisou 297 pacientes na Cleveland Clinic para avaliação da Doença Coronária;
+
+O experimento envolveu 3 estágios:
+ 
+* Teste de esforço (protocolo de Bruce) 
+* Cinefluoroscopia
+* Angiografia coronária
+* Cintilografia com Tálio-201
+
+## Variáveis analisadas
+
+* age
+* sex
+* cp : tipo de dor no peito
+    * Angina Típica: Atende a três critérios (localização atrás do osso do peito, provocada por esforço/estresse e aliviada por repouso).
+
+    * Angina Atípica: Atende a apenas dois desses critérios.
+
+    * Dor Não Anginosa: Atende a apenas um ou nenhum dos critérios, sugerindo que a causa pode ser muscular ou gástrica (não cardíaca).
+
+    * Assintomático: O paciente não sente dor, mas o médico ainda assim solicitou os exames devido a outros fatores de risco (como idade ou histórico familiar).
+
+* thalach : Frequência cardíaca máxima atingida antes da exaustão ou sintomas (no teste de esforço).
+* exang : Indica se o paciente sentiu angina (dor) durante o exercício.
+* oldpeak : diferença entre a posição do segmento ST (ECG) no repouso e no pico do esforço (thalac) (quanto maior essa diferença, maior é a área do coração que sofre por falta de sangue)
+* slope : Enquanto o oldpeak diz o quanto a linha afundou, o slope diz como ela se comporta logo após o afundamento. Existem três tipos principais de inclinação:
+
+    * Value 0: Upsloping (Ascendente): A linha afunda, mas sobe rápido. É comum em exercícios intensos e nem sempre indica doença grave.
+
+    * Value 1: Flat (Plano): A linha afunda e fica "reta". É um sinal clássico e preocupante de isquemia.
+
+    * Value 2: Downsloping (Descendente): A linha afunda e continua descendo. É o sinal mais grave de todos, indicando que o coração está em alto sofrimento isquêmico. (mesmo após a interrupção do esforço)
+
+
+* ca : Número de vasos principais com depósitos de cálcio ou interrupções no fluxo.
+    * 0: Nenhuma calcificação significativa (indício de artérias limpas)
+
+    * 1, 2 o
+    u 3: Indica que a doença está presente em um, dois ou três vasos principais.
+* thal : Avalia se o sangue está chegando a todas as partes do coração durante o repouso e após o esforço.
+
+    * 0 = Normal: O contraste se distribui uniformemente por todo o coração.
+
+    * 1 = Fixed Defect (Defeito Fixo): Uma parte do coração não recebe o contraste nem no esforço, nem no repouso. Isso geralmente indica tecido morto (cicatriz de um infarto antigo).
+
+    * 2 = Reversable Defect (Defeito Reversível): O coração parece normal em repouso, mas "falta sangue" em alguma região durante o esforço. Isso é o sinal clássico de isquemia ativa: a artéria está entupida, mas o tecido ainda está vivo e sofrendo.
+* condition (target)
+
+* trestbps : É a pressão arterial medida no momento da internação.
+* fbs : Glicemia de Jejum é maior ou menor que 120mg/dl (binário)
+* chol : nível total de colesterol no sangue.
+* restecg : 
+
+    * Value 0 (Normal): O coração em repouso não apresenta irregularidades elétricas.
+
+    * Value 1 (Anormalidade de Onda ST-T): O coração já mostra sinais de sofrimento mesmo sem fazer esforço. É um sinal de alerta precoce.
+
+    * Value 2 (Hipertrofia Ventricular Esquerda): Indica que o músculo do coração está "inchado" (grosso), geralmente por ter que fazer muita força para bombear o sangue contra uma pressão alta crônica.
+
+
+
+# Modelagem com Regressão Logística
+
+```{r}
+source(here::here("R", "modelPrep.R"))
+```
+
+
+## Modelo com todas as variáveis
+
+```{r}
+modelo_completo <- glm(condition~ ., data = treino, family = "binomial")
+
+```
+
+
+```{r}
+summary(modelo_completo)
+```
+
+O AIC foi de 183.26. 
+
+Embora o modelo explique bem a variável alvo, é possível observar que a maioria das covariáveis não é estatísticamente significativa, segundo o teste de Wald.
+
+Para verificar isso, faremos um **Teste de Razão de Verossimilhanças**, verificando o impacto da retirada de cada variável.
+
+
+
+```{r}
+pander::pander(  car::Anova(modelo_completo, type = "III", test = "LR")  )
+
+```
+
+
+Aqui é possível obervar que as variáveis que contribuem significativamente (ao nível de 5%) para o modelo são: **sex, cp, oldpeak, slope, ca e thal**.
+
+Para verificar o impacto no modelo ao retirar essas variáveis, faremos o **Teste de Razão de Verossimilhanças** entre o modelo completo e o modelo reduzido.
+
+
+
+```{r}
+modelo_reduzido <- glm( condition ~  sex + cp +
+                        oldpeak + slope + ca + thal,
+                        data = treino, 
+                        family = "binomial"
+                    )
+```
+
+```{r}
+pander::pander(  anova(modelo_completo, modelo_reduzido, test = "Chisq")  )
+```
+
+
+
+O p-valor foi de 0.7863, ou seja, não há evidências de que o modelo completo seja melhor que o modelo reduzido. Então prosseguiremos na análise usando o modelo reduzido.
+
+## Modelo reduzido
+
+```{r}
+pander::pander(  car::Anova(modelo_reduzido, type = "III", test = "LR")  )
+
+```
+
+Todas variáveis contribuem significativamente para o modelo.
+
+### Analisando os coeficientes
+
+```{r}
+summary(modelo_reduzido)
+```
+
+O AIC do modelo reduzido (171.99) foi menor que o do modelo completo, e a Deviance Residual foi aproximadamente igual. Ou seja, o modelo reduzido conseguiu explicar tão bem os dados quanto o completo.
+
+
+```{r}
+pander::pander(  gerar_tabela_or(modelo_reduzido)  )
+```
+
+
+É possível observar que alguns coeficientes estimados são muito incertos (o modelo não conseguiu definir se a associação entre a respectiva variável e o target era positiva ou negativa) (o 1 está contido no IC de 95%);
+
+Essas variáveis foram : cp2, slope2 e thal1
+
+Segundo o teste de wald, essas variáveis não são significativas para o modelo.
+
+
+Outros coeficientes tinham IC com amplitude grande demais, como foi o caso de cp1, cp3, ca2, ca3, 
+
+Ou seja, o modelo não conseguiu estimar precisamente esses coeficientes 
+
+Uma possível motivação para isso é que essas variáveis categóricas possuem algumas classes subrepresentadas no dataset, dificultando a estimação dos parâmetros.
+
+## Treinando modelo com agrupamento de classes subrepresentadas
+
+* cp : 
+    * com_dor : {0, 1, 2}
+    * sem_dor : {3}
+* slope : 
+    * asc : {0}
+    * not_asc : {1, 2}
+* ca : 
+    * zero : {0}
+    * not_zero : {1, 2, 3}
+* thal : 
+    * normal : {0}
+    * not_normal : {1, 2}
+
+```{r}
+modelo_agrupado <- glm(condition ~ sex+ cp +
+                   oldpeak + slope + ca + thal, 
+                 data = treino_agrupado, 
+                 family = "binomial")
+```
+
+```{r}
+summary(modelo_agrupado)
+```
+
+```{r}
+pander::pander(  gerar_tabela_or(modelo_agrupado)  )
+```
+
+Aqui, é possível observar que os parâmetros estão mais estáveis e os odds ratios estão mais de acordo com os insights obtidos na EDA;
+
+
+### Teste razão de verossimilhanças
+
+```{r}
+pander::pander(  anova(modelo_reduzido, modelo_agrupado, test = "Chisq"),
+                 caption= "Teste de Razão de Verossimilhanças entre o modelo reduzido e o agrupado"  )
+```
+
+Ao nível de 5%, a diferença entre os dois modelos não é significativa. De acordo com o princípio da parcimônia e estabilidade dos parâmetros, prosseguiremos com a análise usando o modelo_agrupado.
+
+### Interpretação dos coeficientes do modelo
+
+* Ser homem aumenta a chance de ter a doença em 3 vezes;
+* Ser assintomático aumenta a chance de ter a doença em 8 vezes;
+* Para cada unidade de oldpeak, a chance de ter a doença aumenta em 77%;
+* Pacientes com inclinação não ascendente do segmento ST apresentam uma chance 2.5 vezes maior de ter a doença;
+* Não ter vasos coloridos na fluoroscopia diminui a chance de ter a doença em 90%;
+* Pacientes com resultados de talassemia (thal) considerados não normais possuem 3.5 vezes mais chance de possuirem a doença;
+
+
+### Qualidade do ajuste do modelo
+
+```{r}
+performance::performance_hosmer(modelo_agrupado)
+```
+
+Ao nível de significância de 5%, não foi possível rejeitar H_0, portanto não há evidências contra um mal ajuste do modelo.
+
+
+### Diagnóstico do modelo
+
+```{r}
+par(mfrow = c(2, 2)) # Divide a tela em 2x2
+plot(modelo_agrupado)
+par(mfrow = c(1, 1)) # Volta ao normal depois
+```
+
+```{r}
+leverage <- hatvalues(modelo_agrupado)
+preditos <- predict(modelo_agrupado, type = "response")
+
+# Gerando o gráfico
+plot(preditos, leverage, 
+     main = "Leverage vs Predicted Values",
+     xlab = "Probabilidade Predita",
+     ylab = "Alavancagem (Leverage)",
+    )
+
+# linha de corte (2p/n)
+p <- length(coef(modelo_agrupado))
+n <- nrow(model.frame(modelo_agrupado))
+abline(h = 2 * p / n, col = "red", lty = 2)
+```
+
+```{r}
+# Extraindo os resíduos studentizados (Pearson studentized residuals)
+res_stud <- rstudent(modelo_agrupado)
+
+# Plotando
+plot(preditos, res_stud,
+     main = "Resíduos Studentizados vs Preditos",
+     xlab = "Probabilidade Predita",
+     ylab = "Resíduos Studentizados",
+)
+
+# Linhas de corte para Outliers
+abline(h = c(-2, 0, 2), col = c("red", "gray", "red"), lty = c(2, 1, 2))
+```
+
+```{r}
+# 1. Extrai o componente da deviance ao quadrado para cada observação
+d_quadrado <- residuals(modelo_agrupado, type = "deviance")^2
+preditos <- predict(modelo_agrupado, type = "response")
+
+# 2. Gera o gráfico
+plot(preditos, d_quadrado,
+     xlab = "Valores preditos",
+     ylab = "d²",
+     main = "Componente da Deviance² vs Valores Preditos",
+     pch = 1, col = "black")
+
+# 3. Adiciona a linha de corte sugerida (Chi-quadrado com 1 gl e 95% de confiança)
+abline(h = 3.84, linetype = "dashed", col = "red") # 3.84 é o valor exato para p < 0.05
+```
+
+```{r}
+find("performance_hosmer")
+```

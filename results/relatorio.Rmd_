@@ -240,7 +240,36 @@ performance_hosmer(modelo_agrupado)
 Como a hipótese nula não foi rejeitada, não há evidências nos dados que indiquem que o ajuste não foi bom.
 
 
+```{r}
+cooks_d <- cooks.distance(modelo_agrupado)
+treino_agrupado$cooks_d <- cooks_d
+# Gráfico simples nativo
+plot(modelo_agrupado, which = 4)
+```
 
+```{r}
+# Calcula os DFBETAS para o seu modelo agrupado
+dfb <- dfbetas(modelo_agrupado)
+
+# Transforma em dataframe para facilitar a manipulação
+dfb_df <- as.data.frame(dfb)
+
+# Visualiza as primeiras linhas (cada coluna é um coeficiente)
+head(dfb_df)
+```
+
+```{r}
+# Gráfico para identificar quem afeta o coeficiente de 'oldpeak'
+limite <- 2 / sqrt(nrow(treino_agrupado))
+
+ggplot(dfb_df, aes(x = seq_len(nrow(dfb_df)), y = oldpeak)) +
+  geom_bar(stat = "identity", fill = "indianred") +
+  geom_hline(yintercept = c(limite, -limite), color = "red", linetype = "dashed") +
+  geom_text_repel(aes(label = ifelse(abs(oldpeak) > limite, row.names(dfb_df), "")), size = 3) +
+  labs(title = "DFBETAS: Impacto no Coeficiente de Oldpeak",
+       x = "Índice do Paciente", y = "Variação no Beta") +
+  theme_minimal()
+```
 # Criando árvore de decisão de acordo com as variáveis usadas no modelo logístico reduzido
 
 

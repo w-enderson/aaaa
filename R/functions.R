@@ -1,3 +1,33 @@
+gerar_tabela_or <- function(modelo) {
+  
+  # odds ratios 
+  ors <- exp(stats::coef(modelo))
+  
+  # p-values
+  p_values <- summary(modelo)$coefficients[,4]
+
+  # intervalos de confiança (nível de 5%)
+  intervalos <- suppressMessages(exp(stats::confint(modelo)))
+  
+
+  tabela <- data.frame(
+    "OR" = ors,
+    "IC_2.5" = intervalos[,1],
+    "IC_97.5" = intervalos[,2],
+    "amplitude" = intervalos[,2] - intervalos[,1],
+    "p_valor" = p_values
+  ) 
+
+  tabela <- round(tabela, 4)
+  
+  return(tabela)
+}
+
+
+
+
+
+
 
 
 calc_boot_metrics <- function(data, indices, modelo, tipo_modelo) {
