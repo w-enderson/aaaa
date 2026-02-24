@@ -138,7 +138,7 @@ pander::pander(  anova(modelo_completo, modelo_reduzido, test = "Chisq")  )
 
 
 
-O p-valor foi de 0.7863, ou seja, não há evidências de que o modelo completo seja melhor que o modelo reduzido. Então prosseguiremos na análise usando o modelo reduzido.
+O p-valor foi de 0.7863, ou seja, não há evidências significativas de que o modelo completo seja melhor que o modelo reduzido. Então prosseguiremos a análise usando o modelo reduzido.
 
 ## Modelo reduzido
 
@@ -262,20 +262,6 @@ n <- nrow(model.frame(modelo_agrupado))
 abline(h = 2 * p / n, col = "red", lty = 2)
 ```
 
-```{r}
-# Extraindo os resíduos studentizados (Pearson studentized residuals)
-res_stud <- rstudent(modelo_agrupado)
-
-# Plotando
-plot(preditos, res_stud,
-     main = "Resíduos Studentizados vs Preditos",
-     xlab = "Probabilidade Predita",
-     ylab = "Resíduos Studentizados",
-)
-
-# Linhas de corte para Outliers
-abline(h = c(-2, 0, 2), col = c("red", "gray", "red"), lty = c(2, 1, 2))
-```
 
 ```{r}
 # 1. Extrai o componente da deviance ao quadrado para cada observação
@@ -292,6 +278,9 @@ plot(preditos, d_quadrado,
 # 3. Adiciona a linha de corte sugerida (Chi-quadrado com 1 gl e 95% de confiança)
 abline(h = 3.84, linetype = "dashed", col = "red") # 3.84 é o valor exato para p < 0.05
 ```
+
+É possível observar a presença de algums valores anômalos 
+
 
 ```{r}
 find("performance_hosmer")
