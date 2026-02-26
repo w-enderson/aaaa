@@ -300,3 +300,23 @@ pander::pander(outliers_deviance)
 ```
 
 É possível observar casos em que os indivíduos carregam características de pessoas saudáveis, mas na verdade são doentes e vice versa; Entretanto essas observações são válidas, então não removeremos essas observações;
+
+## Avaliação Final
+
+Para avaliar a robustez do modelo final, foi realizado uma avaliação via Bootstrap Não Paramétrico com 1000 reamostragens. 
+
+```{r}
+
+tabela_final <- validar_modelo_bootstrap(
+  modelo = modelo_agrupado, 
+  dados_teste = teste_agrupado, 
+  nome_coluna_alvo = "condition",
+  R = 1000
+)
+```
+
+```{r}
+pander::pander(tabela_final)
+```
+
+O modelo apresenta desempenho sólido e equilibrado. A acurácia média foi de 79.56%. O coeficiente Kappa de 58.39% (IC 95% : 35.54% - 78.35%) 

@@ -24,93 +24,82 @@ gerar_tabela_or <- function(modelo) {
 }
 
 
-
-
-
-
-
-
-calc_boot_metrics <- function(data, indices, modelo, tipo_modelo) {
-  # Reamostragem
-  d <- data[indices, ]
+# Função para calcular a métrica em cada sorteio (boot)
+calc_all_metrics <- function(data, indices) {
+  amostra <- data[indices, ]
   
   # Predições
-  if (tipo_modelo == "glm") {
-    probs <- predict(modelo, d, type = "response")
-    # Ajuste para garantir que os níveis do fator estejam corretos
-    preds <- factor(ifelse(probs > 0.5, levels(d$condition)[2], levels(d$condition)[1]), 
-                    levels = levels(d$condition))
-  } else {
-    probs <- predict(modelo, d, type = "prob")[, 2]
-    preds <- predict(modelo, d, type = "class")
+  preds_prob <- predict(modelo_agrupado, newdata = amostra, type = "response")
+  preds_class <- factor(ifelse(preds_prob > 0.5, "Doente", "Saudavel"), levels = c("Saudavel", "Doente"))
+  real <- factor(amostra$condition, levels = c("Saudavel", "Doente"))
+  
+  # Matriz de Confusão
+  cm <- confusionMatrix(preds_class, real, positive = "1")
+  
+  # Extraindo o que você pediu:
+  acuracia <- cm$overall["Accuracy"]
+  kappa    <- cm$overall["Kappa"]
+  sens     <- cm$byClass["Sensitivity"]
+  espec    <- cm$byClass["Specificity"]
+  f1       <- cm$byClass["F1"]
+  
+  return(c(acuracia, kappa, sens, espec, f1))
+}
+
+
+validar_modelo_bootstrap <- function(modelo, dados_teste, nome_coluna_alvo, R = 1000) {
+  
+  # 1. Função interna para o cálculo das métricas
+  calc_metrics <- function(data, indices) {
+    amostra <- data[indices, ]
+    
+    # Predições de probabilidade e classe
+    preds_prob <- predict(modelo, newdata = amostra, type = "response")
+    # Garante que os níveis sejam 0 e 1 para a Matrix de Confusão
+    preds_class <- factor(ifelse(preds_prob > 0.5, "Doente", "Saudavel"), levels = c("Saudavel", "Doente"))
+    real <- factor(amostra[[nome_coluna_alvo]], levels = c("Saudavel", "Doente"))
+    
+    # Cálculo da Confusion Matrix
+    cm <- confusionMatrix(preds_class, real, positive = "Doente")
+    
+    # Vetor de retorno: Acurácia, Kappa, Sensibilidade, Especificidade, F1
+    return(c(
+      Acuracia = cm$overall["Accuracy"],
+      Kappa    = cm$overall["Kappa"],
+      Sens     = cm$byClass["Sensitivity"],
+      Espec    = cm$byClass["Specificity"],
+      F1       = cm$byClass["F1"]
+    ))
   }
   
-  # Cálculos usando nomes completos dos pacotes para evitar conflitos
-  cm <- caret::confusionMatrix(preds, d$condition)
+  # 2. Executa o Bootstrap
+  set.seed(123) # Para reprodutibilidade
+  boot_res <- boot(data = dados_teste, statistic = calc_metrics, R = R)
   
-  # Especificamos pROC::roc e pROC::auc para não confundir com o pacote precrec
-  roc_obj <- pROC::roc(d$condition, probs, quiet = TRUE)
-  auc_val <- as.numeric(pROC::auc(roc_obj))
-  
-  # PR-AUC
-  true_numeric <- ifelse(d$condition == levels(d$condition)[2], 1, 0)
-  pr_auc_val <- MLmetrics::PRAUC(y_pred = probs, y_true = true_numeric)
-  
-  return(c(
-    Acc = cm$overall['Accuracy'],
-    Prec = cm$byClass['Precision'],
-    Rec = cm$byClass['Recall'],
-    AUC = auc_val,
-    PR_AUC = pr_auc_val
-  ))
-}
-
-# --- 3. FUNÇÃO PARA ORGANIZAR RESULTADOS DO BOOSTRPA ---
-
-summarize_boot <- function(boot_obj, nome_modelo) {
-  metrics_names <- c("Acurácia", "Precisão", "Recall", "AUC", "PR-AUC")
-  res <- data.frame(
-    Modelo = nome_modelo,
-    Metrica = metrics_names,
-    Media = apply(boot_obj$t, 2, mean),
-    IC_Lower = apply(boot_obj$t, 2, function(x) quantile(x, 0.025)),
-    IC_Upper = apply(boot_obj$t, 2, function(x) quantile(x, 0.975))
+  # 3. Organiza a Tabela Final
+  nomes_metrics <- c("Acurácia", "Kappa", "Sensibilidade", "Especificidade", "F1-Score")
+  tabela <- data.frame(
+    Metrica = nomes_metrics,
+    Media = numeric(5),
+    DP = numeric(5),
+    IC_Inf = numeric(5),
+    IC_Sup = numeric(5)
   )
-  return(res)
+  
+  for (i in 1:5) {
+    tabela$Media[i] <- mean(boot_res$t[, i])
+    tabela$DP[i]    <- sd(boot_res$t[, i])
+    
+    # Tenta calcular o IC (pode falhar se a variância for zero em algum fold)
+    try({
+      ci <- boot.ci(boot_res, type = "perc", index = i)
+      tabela$IC_Inf[i] <- ci$percent[4]
+      tabela$IC_Sup[i] <- ci$percent[5]
+    }, silent = TRUE)
+  }
+  
+  # Arredondamento para 4 casas
+  tabela[,-1] <- round(tabela[,-1], 4)
+  
+  return(tabela)
 }
-
-
-
-plot_logit_linearity <- function(modelo, variavel_continua, data, n_labels = 10) {
-  df_plot <- data
-  df_plot$prob_predita <- predict(modelo, newdata = df_plot, type = "response")
-  
-  # Logit (Log-Odds)
-  df_plot$logito <- log(df_plot$prob_predita / (1 - df_plot$prob_predita))
-  
-  # 1. Calcular resíduos lineares para identificar os pontos mais distantes da tendência
-  # Ajustamos uma reta temporária para medir a distância (resíduo)
-  temp_lm <- lm(as.formula(paste("logito ~", variavel_continua)), data = df_plot)
-  df_plot$residuos_abs <- abs(residuals(temp_lm))
-  
-  # 2. Marcar os top 'n' pontos mais distantes
-  df_plot <- df_plot %>%
-    mutate(label_ponto = ifelse(rank(-residuos_abs) <= n_labels, 
-                                as.character(row.names(df_plot)), ""))
-
-  # 3. Gerar o gráfico
-  ggplot(df_plot, aes_string(x = variavel_continua, y = "logito")) +
-    geom_point() +
-    geom_smooth(method = "lm", color = "darkblue", linetype = "dashed") + # Reta de Mínimos Quadrados
-    geom_smooth(method = "loess", color = "firebrick", fill = "gray80") + # Tendência Local
-    geom_text_repel(aes(label = label_ponto), size = 3, fontface = "bold") +
-    labs(
-      title = paste("Linearidade e Outliers no Logito:", variavel_continua),
-      subtitle = paste("Marcando os", n_labels, "pontos com maior resíduo"),
-      x = variavel_continua,
-      y = "Log-Odds (Logito)",
-    ) +
-    theme_minimal()
-}
-
-# plot_logit_linearity(modelo_agrupado, "oldpeak", treino_agrupado)
