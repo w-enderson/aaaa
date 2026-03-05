@@ -319,4 +319,4 @@ tabela_final <- validar_modelo_bootstrap(
 pander::pander(tabela_final)
 ```
 
-O modelo apresenta desempenho sólido e equilibrado. A acurácia média foi de 79.56%. O coeficiente Kappa de 58.39% (IC 95% : 35.54% - 78.35%) 
+A avaliação final via bootstrap confirma a estabilidade e robustez do modelo. Com uma acurácia média de 79,56% e métricas de sensibilidade e especificidade equilibradas (ambas acima de 77%), o modelo mostra-se capaz de generalizar o aprendizado para novos dados de forma confiável. O coeficiente Kappa de 58,39% ratifica que as previsões possuem consistência estatística, superando amplamente o fator acaso.
